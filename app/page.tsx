@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import type { ReactNode, SVGProps } from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Clock, MapPin, Star } from "lucide-react";
 
@@ -160,12 +160,14 @@ const socials = [
 ];
 
 const starPositions = [
-  "top-[8%] left-[2%]",
-  "top-[19%] right-[3%]",
-  "top-[37%] left-[4%]",
-  "top-[58%] right-[2%]",
-  "top-[79%] left-[3%]",
-  "top-[91%] right-[4%]",
+  "top-[9%] left-[8%]",
+  "top-[18%] right-[14%]",
+  "top-[31%] left-[16%]",
+  "top-[44%] right-[22%]",
+  "top-[57%] left-[10%]",
+  "top-[69%] right-[12%]",
+  "top-[82%] left-[18%]",
+  "top-[92%] right-[20%]",
 ];
 
 const heroLogo: VisualAsset = {
@@ -395,20 +397,38 @@ export default function ReLoadedOnePage() {
   const shouldReduceMotion = useReducedMotion();
   const [isOpen, setIsOpen] = useState(() => getCurrentOpenStatus(new Date()));
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [galleryProgress, setGalleryProgress] = useState(0);
+  const galleryScrollerRef = useRef<HTMLDivElement | null>(null);
   const currentYear = new Date().getFullYear();
 
   useEffect(() => {
     const updateStatus = () => setIsOpen(getCurrentOpenStatus(new Date()));
     const updateScrollTop = () => setShowScrollTop(window.scrollY > 320);
+    const updateGalleryProgress = () => {
+      const node = galleryScrollerRef.current;
+      if (!node) return;
+      const maxScroll = node.scrollWidth - node.clientWidth;
+      if (maxScroll <= 0) {
+        setGalleryProgress(0);
+        return;
+      }
+      setGalleryProgress(node.scrollLeft / maxScroll);
+    };
 
     updateStatus();
     updateScrollTop();
+    updateGalleryProgress();
     const intervalId = window.setInterval(updateStatus, 60_000);
     window.addEventListener("scroll", updateScrollTop, { passive: true });
+    window.addEventListener("resize", updateGalleryProgress);
+    const node = galleryScrollerRef.current;
+    node?.addEventListener("scroll", updateGalleryProgress, { passive: true });
 
     return () => {
       window.clearInterval(intervalId);
       window.removeEventListener("scroll", updateScrollTop);
+      window.removeEventListener("resize", updateGalleryProgress);
+      node?.removeEventListener("scroll", updateGalleryProgress);
     };
   }, []);
 
@@ -429,7 +449,7 @@ export default function ReLoadedOnePage() {
         ))}
       </div>
 
-      <section className="relative z-10 min-h-screen px-5 py-8 md:px-12 md:py-12">
+      <section className="relative z-10 min-h-screen px-5 py-5 md:px-12 md:py-12">
         <motion.div
           initial={{ y: -80, rotate: -5, opacity: 0 }}
           animate={{ y: 0, rotate: -2, opacity: 1 }}
@@ -438,9 +458,9 @@ export default function ReLoadedOnePage() {
               ? { duration: 0 }
               : { type: "spring", stiffness: 90, damping: 12 }
           }
-          className="mx-auto max-w-6xl bg-white p-5 shadow-2xl md:p-10"
+          className="mx-auto max-w-6xl bg-white p-4 shadow-2xl md:p-10"
         >
-          <div className="grid items-center gap-8 md:grid-cols-[0.95fr_1.05fr]">
+          <div className="grid items-center gap-5 md:grid-cols-[0.95fr_1.05fr] md:gap-8">
             <motion.div
               initial={{ opacity: 0, rotate: 4, x: 40 }}
               animate={{ opacity: 1, rotate: 0, x: 0 }}
@@ -449,7 +469,7 @@ export default function ReLoadedOnePage() {
                   ? { duration: 0 }
                   : { delay: 0.45, type: "spring", stiffness: 80 }
               }
-              className="relative flex min-h-[240px] items-center justify-center md:min-h-[420px]"
+              className="relative flex min-h-[190px] items-center justify-center md:min-h-[420px]"
             >
               <motion.div
                 animate={
@@ -464,7 +484,7 @@ export default function ReLoadedOnePage() {
                 }
                 className="relative flex w-full items-center justify-center"
               >
-                <div className="relative h-44 w-full max-w-[22rem] md:h-56 md:max-w-[24rem]">
+                <div className="relative h-32 w-full max-w-[20rem] md:h-56 md:max-w-[24rem]">
                   <Image
                     src={heroLogo.src}
                     alt={heroLogo.alt}
@@ -541,7 +561,10 @@ export default function ReLoadedOnePage() {
           <div className="relative overflow-hidden md:hidden">
             <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-[#e30613] via-[#e30613]/85 to-transparent" />
           </div>
-          <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto overflow-y-hidden pb-3 md:grid md:grid-cols-3 md:overflow-visible">
+          <div
+            ref={galleryScrollerRef}
+            className="no-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto overflow-y-hidden pb-3 md:grid md:grid-cols-3 md:overflow-visible"
+          >
             {galleryAssets.map((asset, index) => (
               <motion.div
                 key={asset.label}
@@ -570,7 +593,13 @@ export default function ReLoadedOnePage() {
             ))}
           </div>
           <div className="mt-1 h-1.5 rounded-full bg-white/25 md:hidden">
-            <div className="h-full w-24 rounded-full bg-white" />
+            <div
+              className="h-full rounded-full bg-white transition-[width,transform] duration-150"
+              style={{
+                width: "22%",
+                transform: `translateX(${galleryProgress * 355}%)`,
+              }}
+            />
           </div>
         </div>
       </section>
