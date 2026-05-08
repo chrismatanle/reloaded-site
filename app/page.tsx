@@ -153,15 +153,21 @@ const socials = [
     label: "Facebook",
     href: "https://facebook.com/reloadeddawlish",
   },
+  {
+    label: "Google",
+    href: "https://share.google/caOXAEYzmXagoQAOS",
+  },
 ];
 
 const starPositions = [
-  "top-16 left-[8%]",
-  "top-32 right-[12%]",
-  "top-[42%] left-[4%]",
-  "top-[58%] right-[6%]",
-  "bottom-24 left-[16%]",
-  "bottom-32 right-[18%]",
+  "top-12 left-[3%]",
+  "top-28 right-[4%]",
+  "top-[22%] left-[2%]",
+  "top-[34%] right-[3%]",
+  "top-[48%] left-[3%]",
+  "top-[60%] right-[2%]",
+  "top-[74%] left-[4%]",
+  "top-[86%] right-[3%]",
 ];
 
 const heroLogo: VisualAsset = {
@@ -183,7 +189,7 @@ const galleryAssets: VisualAsset[] = [
     src: "/reloaded-loaded-fries-bacon-jam-and-pickled-onion-square.jpg",
   },
   {
-    label: "Beef Burger",
+    label: "Steak & Shortrib Burger",
     alt: "ReLoaded beef burger",
     src: "/beef-burger.jpg",
   },
@@ -208,7 +214,6 @@ const wingsSpecialAsset: VisualAsset = {
 };
 
 const marqueeItems = [
-  "RELOADED DAWLISH",
   "LOADED FRIES",
   "STEAK & SHORTRIB BURGERS",
   "CRISPY CHICKEN",
@@ -259,6 +264,29 @@ function SocialIconFacebook(props: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
       <path d="M13.85 20v-7.12h2.4l.36-2.78h-2.76V8.33c0-.8.22-1.35 1.38-1.35h1.47V4.5c-.7-.1-1.41-.15-2.12-.15-2.1 0-3.55 1.28-3.55 3.64V10.1H8.67v2.78h2.36V20z" />
+    </svg>
+  );
+}
+
+function SocialIconGoogle(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
+      <path
+        d="M21.6 12.23c0-.73-.07-1.43-.2-2.1H12v3.97h5.38a4.6 4.6 0 0 1-2 3.02v2.5h3.23c1.9-1.75 3-4.34 3-7.39Z"
+        fill="currentColor"
+      />
+      <path
+        d="M12 22c2.7 0 4.96-.9 6.61-2.43l-3.23-2.5c-.9.6-2.04.95-3.38.95-2.6 0-4.8-1.75-5.59-4.1H3.08v2.58A10 10 0 0 0 12 22Z"
+        fill="currentColor"
+      />
+      <path
+        d="M6.41 13.92A6 6 0 0 1 6.1 12c0-.67.11-1.32.31-1.92V7.5H3.08A10 10 0 0 0 2 12c0 1.62.39 3.15 1.08 4.5l3.33-2.58Z"
+        fill="currentColor"
+      />
+      <path
+        d="M12 5.98c1.47 0 2.8.5 3.84 1.5l2.88-2.88C16.95 2.96 14.7 2 12 2A10 10 0 0 0 3.08 7.5l3.33 2.58c.79-2.36 2.99-4.1 5.59-4.1Z"
+        fill="currentColor"
+      />
     </svg>
   );
 }
@@ -381,8 +409,8 @@ export default function ReLoadedOnePage() {
         }}
       />
 
-      {starPositions.map((pos) => (
-        <PopStar key={pos} className={pos} />
+      {starPositions.map((pos, index) => (
+        <PopStar key={`${pos}-${index}`} className={pos} />
       ))}
 
       <section className="relative min-h-screen px-5 py-8 md:px-12 md:py-12">
@@ -396,7 +424,39 @@ export default function ReLoadedOnePage() {
           }
           className="mx-auto max-w-6xl bg-white p-5 shadow-2xl md:p-10"
         >
-          <div className="grid items-center gap-8 md:grid-cols-[1.05fr_0.95fr]">
+          <div className="grid items-center gap-8 md:grid-cols-[0.95fr_1.05fr]">
+            <motion.div
+              initial={{ opacity: 0, rotate: 4, x: 40 }}
+              animate={{ opacity: 1, rotate: 0, x: 0 }}
+              transition={
+                shouldReduceMotion
+                  ? { duration: 0 }
+                  : { delay: 0.45, type: "spring", stiffness: 80 }
+              }
+              className="relative flex min-h-[360px] items-center justify-center md:min-h-[420px]"
+            >
+              <motion.div
+                animate={
+                  shouldReduceMotion
+                    ? undefined
+                    : { y: [0, -10, 0], scale: [1, 1.02, 1], rotate: [-1, 1, -1] }
+                }
+                transition={
+                  shouldReduceMotion
+                    ? undefined
+                    : { duration: 3, repeat: Infinity, ease: "easeInOut" as const }
+                }
+                className="relative flex w-full items-center justify-center"
+              >
+                <VisualPlaceholder
+                  asset={heroLogo}
+                  className="h-56 w-full max-w-[24rem] border-0 bg-transparent shadow-none"
+                  labelClassName="bg-[#fff2b8] py-10 text-3xl md:text-4xl"
+                  imageClassName="object-contain"
+                />
+              </motion.div>
+            </motion.div>
+
             <div>
               <motion.p
                 initial={{ x: -40, opacity: 0 }}
@@ -453,55 +513,6 @@ export default function ReLoadedOnePage() {
                 </a>
               </motion.div>
             </div>
-
-            <motion.div
-              initial={{ opacity: 0, rotate: 4, x: 40 }}
-              animate={{ opacity: 1, rotate: 0, x: 0 }}
-              transition={
-                shouldReduceMotion
-                  ? { duration: 0 }
-                  : { delay: 0.45, type: "spring", stiffness: 80 }
-              }
-              className="relative flex min-h-[420px] items-center justify-center"
-            >
-              <motion.div
-                animate={
-                  shouldReduceMotion
-                    ? undefined
-                    : { y: [0, -10, 0], scale: [1, 1.02, 1], rotate: [-1, 1, -1] }
-                }
-                transition={
-                  shouldReduceMotion
-                    ? undefined
-                    : { duration: 3, repeat: Infinity, ease: "easeInOut" as const }
-                }
-                className="relative flex w-full items-center justify-center"
-              >
-                <VisualPlaceholder
-                  asset={heroLogo}
-                  className="h-56 w-full max-w-[24rem] border-0 bg-transparent shadow-none"
-                  labelClassName="bg-[#fff2b8] py-10 text-3xl md:text-4xl"
-                  imageClassName="object-contain"
-                />
-              </motion.div>
-              <motion.div
-                animate={
-                  shouldReduceMotion
-                    ? undefined
-                    : { rotate: [0, 4, -3, 0], scale: [1, 1.05, 1] }
-                }
-                transition={
-                  shouldReduceMotion ? undefined : { duration: 2.2, repeat: Infinity }
-                }
-                className="absolute right-0 top-0 rounded-full bg-black p-6 text-center text-3xl font-black uppercase text-white shadow-xl"
-              >
-                Come
-                <br />
-                and
-                <br />
-                see us!
-              </motion.div>
-            </motion.div>
           </div>
         </motion.div>
 
@@ -537,19 +548,19 @@ export default function ReLoadedOnePage() {
         </div>
       </section>
 
-      <div className="relative w-full rotate-[-1deg] overflow-hidden bg-black py-4 text-white">
+      <div className="relative left-1/2 w-screen -translate-x-1/2 rotate-[-1deg] overflow-hidden bg-black py-4 text-white">
         <motion.div
-          animate={shouldReduceMotion ? undefined : { x: [0, -900] }}
+          animate={shouldReduceMotion ? undefined : { x: ["0%", "-50%"] }}
           transition={
             shouldReduceMotion
               ? undefined
-              : { duration: 18, repeat: Infinity, ease: "linear" as const }
+              : { duration: 22, repeat: Infinity, ease: "linear" as const }
           }
-          className="flex whitespace-nowrap text-3xl font-black uppercase tracking-tight"
+          className="flex w-max whitespace-nowrap text-3xl font-black uppercase tracking-tight"
         >
-          {Array.from({ length: 4 }).map((_, i) => (
-            <span key={i} className="mx-6">
-              {marqueeItems.join(" • ")} •
+          {[...marqueeItems, ...marqueeItems].map((item, index) => (
+            <span key={`${item}-${index}`} className="mx-6">
+              {item} •
             </span>
           ))}
         </motion.div>
@@ -582,7 +593,7 @@ export default function ReLoadedOnePage() {
                   ? { duration: 0 }
                   : { type: "spring", stiffness: 110, damping: 16 }
               }
-              className="border-8 border-black bg-[#fff2b8] p-6 shadow-2xl"
+              className="border-8 border-black bg-white p-6 shadow-2xl"
             >
               <div className="mb-4 inline-flex rotate-[-2deg] bg-[#e30613] px-4 py-2 text-sm font-black uppercase tracking-[0.18em] text-white shadow-lg">
                 Lunchtime Special
@@ -620,6 +631,9 @@ export default function ReLoadedOnePage() {
               }
               className="border-8 border-black bg-white p-6 shadow-2xl"
             >
+              <div className="mb-4 inline-flex rotate-[-2deg] bg-[#e30613] px-4 py-2 text-sm font-black uppercase tracking-[0.18em] text-white shadow-lg">
+                Midweek Special
+              </div>
               <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
                 <div className="flex-1">
                   <h3 className="text-4xl font-black uppercase leading-none text-[#e30613] md:text-5xl">
@@ -664,15 +678,7 @@ export default function ReLoadedOnePage() {
                   <span className="h-4 w-4 shrink-0 rotate-45 bg-[#e30613]" aria-hidden="true" />
                   <div>
                     <h3 className="text-2xl font-black uppercase leading-none text-[#e30613]">
-                      {section.title === "Tofu Burger + Crispy Tofu" ? (
-                        <>
-                          Tofu Burger
-                          <br />
-                          + Crispy Tofu
-                        </>
-                      ) : (
-                        section.title
-                      )}
+                      {section.title === "Tofu Burger + Crispy Tofu" ? "Tofu" : section.title}
                     </h3>
                     {section.subtitle ? (
                       <p className="mt-2 max-w-md text-sm font-bold normal-case text-neutral-700">
@@ -683,12 +689,15 @@ export default function ReLoadedOnePage() {
                 </div>
                 <div className="space-y-5">
                   {section.items.map((item) => (
-                    <div key={item.name}>
+                    <div
+                      key={item.name}
+                      className="border-t border-black/10 pt-4 first:border-t-0 first:pt-0"
+                    >
                       <div className="flex items-start justify-between gap-4">
                         <h4 className="max-w-[18rem] text-xl font-black uppercase">
                           {item.name}
                         </h4>
-                        <p className="min-w-[5.5rem] shrink-0 text-right text-xl font-black">
+                        <p className="min-w-[5.5rem] shrink-0 text-right text-xl font-black text-[#e30613]">
                           {item.price}
                         </p>
                       </div>
@@ -706,7 +715,7 @@ export default function ReLoadedOnePage() {
                                 detail === "Sauce Options:"
                                   ? "pt-1 font-black uppercase text-[#e30613]"
                                   : detail === "or"
-                                    ? "py-1 text-center font-black uppercase tracking-[0.2em] text-black"
+                                    ? "py-1 text-left font-black uppercase text-black"
                                     : ""
                               }
                             >
@@ -778,10 +787,12 @@ export default function ReLoadedOnePage() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`${label} (opens in a new tab)`}
-                  className="group inline-flex items-center gap-2 rounded-full bg-black px-5 py-3 text-lg font-black uppercase text-white transition hover:-translate-y-1 hover:bg-[#e30613] focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#e30613]"
+                  className="group inline-flex items-center gap-2 rounded-full bg-black px-4 py-3 text-base font-black uppercase text-white transition hover:-translate-y-1 hover:bg-[#e30613] focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#e30613]"
                 >
                   {label === "Instagram" ? (
                     <SocialIconInstagram className="h-5 w-5 transition group-hover:rotate-12" />
+                  ) : label === "Google" ? (
+                    <SocialIconGoogle className="h-5 w-5 transition group-hover:rotate-12" />
                   ) : (
                     <SocialIconFacebook className="h-5 w-5 transition group-hover:rotate-12" />
                   )}{" "}
