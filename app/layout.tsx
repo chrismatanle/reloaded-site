@@ -39,9 +39,9 @@ export const metadata: Metadata = {
     images: ["/ReLoaded-Red-on-White-Transp.png"],
   },
   icons: {
-    icon: "/ReLoaded-Red-on-White-Transp.png",
-    apple: "/ReLoaded-Red-on-White-Transp.png",
-    shortcut: "/ReLoaded-Red-on-White-Transp.png",
+    icon: "/icon.png",
+    apple: "/apple-touch-icon.png",
+    shortcut: "/icon.png",
   },
 };
 

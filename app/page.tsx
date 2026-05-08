@@ -413,7 +413,7 @@ export default function ReLoadedOnePage() {
   }, []);
 
   return (
-    <main className="min-h-screen overflow-hidden bg-[#e30613] text-black">
+    <main className="relative min-h-screen overflow-hidden bg-[#e30613] text-black">
       <div
         className="pointer-events-none fixed inset-0 opacity-20"
         style={{
@@ -423,11 +423,13 @@ export default function ReLoadedOnePage() {
         }}
       />
 
-      {starPositions.map((pos, index) => (
-        <PopStar key={`${pos}-${index}`} className={`hidden md:block ${pos}`} />
-      ))}
+      <div className="pointer-events-none absolute inset-0 hidden md:block">
+        {starPositions.map((pos, index) => (
+          <PopStar key={`${pos}-${index}`} className={pos} />
+        ))}
+      </div>
 
-      <section className="relative min-h-screen px-5 py-8 md:px-12 md:py-12">
+      <section className="relative z-10 min-h-screen px-5 py-8 md:px-12 md:py-12">
         <motion.div
           initial={{ y: -80, rotate: -5, opacity: 0 }}
           animate={{ y: 0, rotate: -2, opacity: 1 }}
@@ -462,12 +464,17 @@ export default function ReLoadedOnePage() {
                 }
                 className="relative flex w-full items-center justify-center"
               >
-                <VisualPlaceholder
-                  asset={heroLogo}
-                  className="h-44 w-full max-w-[22rem] border-0 bg-transparent shadow-none md:h-56 md:max-w-[24rem]"
-                  labelClassName="bg-[#fff2b8] py-10 text-3xl md:text-4xl"
-                  imageClassName="object-contain"
-                />
+                <div className="relative h-44 w-full max-w-[22rem] md:h-56 md:max-w-[24rem]">
+                  <Image
+                    src={heroLogo.src}
+                    alt={heroLogo.alt}
+                    fill
+                    priority
+                    loading="eager"
+                    sizes="(max-width: 768px) 80vw, 24rem"
+                    className="object-contain"
+                  />
+                </div>
               </motion.div>
             </motion.div>
 
@@ -531,13 +538,10 @@ export default function ReLoadedOnePage() {
         </motion.div>
 
         <div className="mx-auto mt-5 max-w-6xl">
-          <div className="relative md:hidden">
+          <div className="relative overflow-hidden md:hidden">
             <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-[#e30613] via-[#e30613]/85 to-transparent" />
-            <p className="mb-2 text-right text-xs font-black uppercase tracking-[0.2em] text-white/80">
-              Swipe
-            </p>
           </div>
-          <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto overflow-y-hidden pb-2 md:grid md:grid-cols-3 md:overflow-visible">
+          <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto overflow-y-hidden pb-3 md:grid md:grid-cols-3 md:overflow-visible">
             {galleryAssets.map((asset, index) => (
               <motion.div
                 key={asset.label}
@@ -565,10 +569,13 @@ export default function ReLoadedOnePage() {
               </motion.div>
             ))}
           </div>
+          <div className="mt-1 h-1.5 rounded-full bg-white/25 md:hidden">
+            <div className="h-full w-24 rounded-full bg-white" />
+          </div>
         </div>
       </section>
 
-      <div className="relative left-1/2 w-screen -translate-x-1/2 rotate-[-1deg] overflow-hidden bg-black py-4 text-white">
+      <div className="relative left-1/2 z-10 w-screen -translate-x-1/2 rotate-[-1deg] overflow-hidden bg-black py-4 text-white">
         <motion.div
           animate={shouldReduceMotion ? undefined : { x: ["0%", "-50%"] }}
           transition={
@@ -578,16 +585,20 @@ export default function ReLoadedOnePage() {
           }
           className="flex w-max whitespace-nowrap text-3xl font-black uppercase tracking-tight"
         >
-          {[...marqueeItems, ...marqueeItems].map((item, index) => (
+          {Array.from({ length: 2 })
+            .flatMap(() => marqueeItems)
+            .map((item, index) => (
             <span key={`${item}-${index}`} className="flex items-center">
               <span className="mx-6">{item}</span>
-              <span className="text-white/90">•</span>
+              {index < Array.from({ length: 2 }).flatMap(() => marqueeItems).length - 1 ? (
+                <span className="text-white/90">•</span>
+              ) : null}
             </span>
           ))}
         </motion.div>
       </div>
 
-      <section id="menu" className="relative px-5 py-20 md:px-12">
+      <section id="menu" className="relative z-10 px-5 py-20 md:px-12">
         <div className="mx-auto max-w-6xl">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
@@ -753,7 +764,7 @@ export default function ReLoadedOnePage() {
         </div>
       </section>
 
-      <section id="visit" className="relative bg-white px-5 py-20 md:px-12">
+      <section id="visit" className="relative z-10 bg-white px-5 py-20 md:px-12">
         <div className="mx-auto grid max-w-6xl gap-8 md:grid-cols-2">
           <motion.div
             initial={{ opacity: 0, x: -60 }}
@@ -824,7 +835,7 @@ export default function ReLoadedOnePage() {
         </div>
       </section>
 
-      <footer className="relative overflow-hidden bg-black px-5 py-12 text-center text-white">
+      <footer className="relative z-10 overflow-hidden bg-black px-5 py-12 text-center text-white">
         <motion.p
           animate={shouldReduceMotion ? undefined : { scale: [1, 1.05, 1] }}
           transition={
