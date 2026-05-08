@@ -484,21 +484,21 @@ export default function ReLoadedOnePage() {
                 }
                 className="relative flex w-full items-center justify-center"
               >
-                <div className="relative h-32 w-full max-w-[20rem] md:h-56 md:max-w-[24rem]">
+                <div className="relative h-40 w-full max-w-[26rem] md:h-56 md:max-w-[24rem]">
                   <Image
                     src={heroLogo.src}
                     alt={heroLogo.alt}
                     fill
                     priority
                     loading="eager"
-                    sizes="(max-width: 768px) 80vw, 24rem"
+                    sizes="(max-width: 768px) 92vw, 24rem"
                     className="object-contain"
                   />
                 </div>
               </motion.div>
             </motion.div>
 
-            <div>
+            <div className="text-center md:text-left">
               <motion.p
                 initial={{ x: -40, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
@@ -529,7 +529,7 @@ export default function ReLoadedOnePage() {
                 transition={shouldReduceMotion ? { duration: 0 } : { delay: 0.55 }}
                 className="mt-7"
               >
-                <Brush className="text-xl font-black uppercase md:text-3xl">
+                <Brush className="whitespace-nowrap text-[0.8rem] font-black uppercase sm:text-xl md:text-3xl">
                   Stop settling for boring food
                 </Brush>
               </motion.div>
@@ -538,7 +538,7 @@ export default function ReLoadedOnePage() {
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={shouldReduceMotion ? { duration: 0 } : { delay: 0.7 }}
-                className="mt-8 flex flex-wrap gap-3"
+                className="mt-8 flex flex-wrap justify-center gap-3 md:justify-start"
               >
                 <a
                   href="#menu"

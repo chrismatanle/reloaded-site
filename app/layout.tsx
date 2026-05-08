@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+  metadataBase: new URL("https://reloadeddawlish.co.uk"),
   title: "ReLoaded Dawlish",
   description:
     "Loaded fries, burgers, chicken, tofu and serious flavour at 3 Piermont Place, Dawlish.",
@@ -15,19 +15,22 @@ export const metadata: Metadata = {
     "Dawlish loaded fries",
     "burgers in Dawlish",
     "loaded fries Dawlish",
-    "Dawlish street food",
+    "ReLoaded takeaway Dawlish",
   ],
   openGraph: {
     title: "ReLoaded Dawlish",
     description:
       "Loaded fries, burgers, chicken, tofu and serious flavour at 3 Piermont Place, Dawlish.",
+    url: "https://reloadeddawlish.co.uk",
     type: "website",
     locale: "en_GB",
     siteName: "ReLoaded Dawlish",
     images: [
       {
-        url: "/ReLoaded-Red-on-White-Transp.png",
-        alt: "ReLoaded Dawlish logo",
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "ReLoaded Dawlish social preview logo",
       },
     ],
   },
@@ -36,7 +39,7 @@ export const metadata: Metadata = {
     title: "ReLoaded Dawlish",
     description:
       "Loaded fries, burgers, chicken, tofu and serious flavour at 3 Piermont Place, Dawlish.",
-    images: ["/ReLoaded-Red-on-White-Transp.png"],
+    images: ["/og-image.png"],
   },
   icons: {
     icon: [{ url: "/favicon.ico" }, { url: "/icon.png", type: "image/png" }],
