@@ -170,19 +170,19 @@ const galleryAssets: VisualAsset[] = [
   {
     label: "Loaded Fries",
     alt: "ReLoaded loaded fries topped with bacon jam and pickled onion",
-    src: "/reloaded_loaded_fries_bacon jam and pickled_onion_square.jpg",
+    src: "/reloaded-loaded-fries-bacon-jam-and-pickled-onion-square.jpg",
   },
   {
     label: "Beef Burger",
     alt: "ReLoaded beef burger",
-    src: "/beef%20burger.png",
+    src: "/beef-burger.jpg",
   },
 ];
 
 const mealDealAsset: VisualAsset = {
   label: "Meal Deal",
   alt: "ReLoaded meal deal burger and fries",
-  src: "/meal%20deal.png",
+  src: "/meal-deal.jpg",
 };
 
 const wingsSpecial: MenuItem = {
@@ -194,7 +194,7 @@ const wingsSpecial: MenuItem = {
 const wingsSpecialAsset: VisualAsset = {
   label: "Wings Wednesday",
   alt: "Boneless chicken wings",
-  src: "/boneless%20wings.png",
+  src: "/boneless-wings.jpeg",
 };
 
 const marqueeItems = [
