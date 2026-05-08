@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import type { ReactNode, SVGProps } from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Clock, MapPin, Star } from "lucide-react";
 
@@ -397,20 +397,44 @@ export default function ReLoadedOnePage() {
   const shouldReduceMotion = useReducedMotion();
   const [isOpen, setIsOpen] = useState(() => getCurrentOpenStatus(new Date()));
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [galleryProgress, setGalleryProgress] = useState(0);
+  const galleryScrollerRef = useRef<HTMLDivElement | null>(null);
   const currentYear = new Date().getFullYear();
 
   useEffect(() => {
     const updateStatus = () => setIsOpen(getCurrentOpenStatus(new Date()));
     const updateScrollTop = () => setShowScrollTop(window.scrollY > 320);
+    let frameId = 0;
+    const updateGalleryProgress = () => {
+      const node = galleryScrollerRef.current;
+      if (!node) return;
+      const maxScroll = node.scrollWidth - node.clientWidth;
+      const nextProgress = maxScroll > 0 ? node.scrollLeft / maxScroll : 0;
+      setGalleryProgress(nextProgress);
+    };
+    const handleGalleryScroll = () => {
+      if (frameId) return;
+      frameId = window.requestAnimationFrame(() => {
+        updateGalleryProgress();
+        frameId = 0;
+      });
+    };
 
     updateStatus();
     updateScrollTop();
+    updateGalleryProgress();
     const intervalId = window.setInterval(updateStatus, 60_000);
     window.addEventListener("scroll", updateScrollTop, { passive: true });
+    window.addEventListener("resize", updateGalleryProgress);
+    const galleryNode = galleryScrollerRef.current;
+    galleryNode?.addEventListener("scroll", handleGalleryScroll, { passive: true });
 
     return () => {
       window.clearInterval(intervalId);
       window.removeEventListener("scroll", updateScrollTop);
+      window.removeEventListener("resize", updateGalleryProgress);
+      galleryNode?.removeEventListener("scroll", handleGalleryScroll);
+      if (frameId) window.cancelAnimationFrame(frameId);
     };
   }, []);
 
@@ -500,7 +524,7 @@ export default function ReLoadedOnePage() {
                 }
                 className="text-6xl font-black uppercase leading-[0.9] tracking-[-0.06em] md:text-8xl lg:text-9xl"
               >
-                Get
+                Let&apos;s Get
                 <br />
                 ReLoaded
               </motion.h1>
@@ -544,6 +568,7 @@ export default function ReLoadedOnePage() {
             <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-[#e30613] via-[#e30613]/85 to-transparent" />
           </div>
           <div
+            ref={galleryScrollerRef}
             className="no-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto overflow-y-hidden pb-3 md:grid md:grid-cols-3 md:overflow-visible"
           >
             {galleryAssets.map((asset, index) => (
@@ -574,7 +599,12 @@ export default function ReLoadedOnePage() {
             ))}
           </div>
           <div className="mt-2 h-1.5 rounded-full bg-white/25 md:hidden">
-            <div className="h-full w-24 rounded-full bg-white" />
+            <div
+              className="h-full w-[22%] rounded-full bg-white"
+              style={{
+                marginLeft: `${galleryProgress * 78}%`,
+              }}
+            />
           </div>
         </div>
       </section>
