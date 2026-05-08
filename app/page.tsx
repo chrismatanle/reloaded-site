@@ -160,14 +160,12 @@ const socials = [
 ];
 
 const starPositions = [
-  "top-12 left-[3%]",
-  "top-28 right-[4%]",
-  "top-[22%] left-[2%]",
-  "top-[34%] right-[3%]",
-  "top-[48%] left-[3%]",
-  "top-[60%] right-[2%]",
-  "top-[74%] left-[4%]",
-  "top-[86%] right-[3%]",
+  "top-[8%] left-[2%]",
+  "top-[19%] right-[3%]",
+  "top-[37%] left-[4%]",
+  "top-[58%] right-[2%]",
+  "top-[79%] left-[3%]",
+  "top-[91%] right-[4%]",
 ];
 
 const heroLogo: VisualAsset = {
@@ -291,6 +289,15 @@ function SocialIconGoogle(props: SVGProps<SVGSVGElement>) {
   );
 }
 
+function ScrollTopIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden="true" {...props}>
+      <path d="M12 19V5" />
+      <path d="m6 11 6-6 6 6" />
+    </svg>
+  );
+}
+
 function VisualPlaceholder({
   asset,
   className = "",
@@ -387,15 +394,22 @@ function Brush({
 export default function ReLoadedOnePage() {
   const shouldReduceMotion = useReducedMotion();
   const [isOpen, setIsOpen] = useState(() => getCurrentOpenStatus(new Date()));
+  const [showScrollTop, setShowScrollTop] = useState(false);
   const currentYear = new Date().getFullYear();
 
   useEffect(() => {
     const updateStatus = () => setIsOpen(getCurrentOpenStatus(new Date()));
+    const updateScrollTop = () => setShowScrollTop(window.scrollY > 320);
 
     updateStatus();
+    updateScrollTop();
     const intervalId = window.setInterval(updateStatus, 60_000);
+    window.addEventListener("scroll", updateScrollTop, { passive: true });
 
-    return () => window.clearInterval(intervalId);
+    return () => {
+      window.clearInterval(intervalId);
+      window.removeEventListener("scroll", updateScrollTop);
+    };
   }, []);
 
   return (
@@ -410,7 +424,7 @@ export default function ReLoadedOnePage() {
       />
 
       {starPositions.map((pos, index) => (
-        <PopStar key={`${pos}-${index}`} className={pos} />
+        <PopStar key={`${pos}-${index}`} className={`hidden md:block ${pos}`} />
       ))}
 
       <section className="relative min-h-screen px-5 py-8 md:px-12 md:py-12">
@@ -433,7 +447,7 @@ export default function ReLoadedOnePage() {
                   ? { duration: 0 }
                   : { delay: 0.45, type: "spring", stiffness: 80 }
               }
-              className="relative flex min-h-[360px] items-center justify-center md:min-h-[420px]"
+              className="relative flex min-h-[240px] items-center justify-center md:min-h-[420px]"
             >
               <motion.div
                 animate={
@@ -450,7 +464,7 @@ export default function ReLoadedOnePage() {
               >
                 <VisualPlaceholder
                   asset={heroLogo}
-                  className="h-56 w-full max-w-[24rem] border-0 bg-transparent shadow-none"
+                  className="h-44 w-full max-w-[22rem] border-0 bg-transparent shadow-none md:h-56 md:max-w-[24rem]"
                   labelClassName="bg-[#fff2b8] py-10 text-3xl md:text-4xl"
                   imageClassName="object-contain"
                 />
@@ -517,7 +531,13 @@ export default function ReLoadedOnePage() {
         </motion.div>
 
         <div className="mx-auto mt-5 max-w-6xl">
-          <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 md:grid md:grid-cols-3 md:overflow-visible">
+          <div className="relative md:hidden">
+            <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-[#e30613] via-[#e30613]/85 to-transparent" />
+            <p className="mb-2 text-right text-xs font-black uppercase tracking-[0.2em] text-white/80">
+              Swipe
+            </p>
+          </div>
+          <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto overflow-y-hidden pb-2 md:grid md:grid-cols-3 md:overflow-visible">
             {galleryAssets.map((asset, index) => (
               <motion.div
                 key={asset.label}
@@ -534,7 +554,7 @@ export default function ReLoadedOnePage() {
                         damping: 16,
                       }
                 }
-                className="aspect-square min-w-[78vw] snap-center md:min-w-0"
+                className="aspect-square min-w-[84vw] snap-center md:min-w-0"
               >
                 <VisualPlaceholder
                   asset={asset}
@@ -559,8 +579,9 @@ export default function ReLoadedOnePage() {
           className="flex w-max whitespace-nowrap text-3xl font-black uppercase tracking-tight"
         >
           {[...marqueeItems, ...marqueeItems].map((item, index) => (
-            <span key={`${item}-${index}`} className="mx-6">
-              {item} •
+            <span key={`${item}-${index}`} className="flex items-center">
+              <span className="mx-6">{item}</span>
+              <span className="text-white/90">•</span>
             </span>
           ))}
         </motion.div>
@@ -600,7 +621,7 @@ export default function ReLoadedOnePage() {
               </div>
               <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
                 <div className="flex-1">
-                  <h3 className="text-4xl font-black uppercase leading-none text-black md:text-5xl">
+                  <h3 className="text-4xl font-black uppercase leading-none text-[#e30613] md:text-5xl">
                     {lunchSpecial.name}
                   </h3>
                   <p className="mt-3 text-lg font-bold text-neutral-800">
@@ -674,8 +695,7 @@ export default function ReLoadedOnePage() {
                 }
                 className="bg-white p-5 shadow-2xl"
               >
-                <div className="mb-5 flex items-center gap-3 border-b-4 border-black pb-4">
-                  <span className="h-4 w-4 shrink-0 rotate-45 bg-[#e30613]" aria-hidden="true" />
+                <div className="mb-5 border-b-4 border-black pb-4">
                   <div>
                     <h3 className="text-2xl font-black uppercase leading-none text-[#e30613]">
                       {section.title === "Tofu Burger + Crispy Tofu" ? "Tofu" : section.title}
@@ -827,6 +847,17 @@ export default function ReLoadedOnePage() {
           </p>
         </div>
       </footer>
+
+      {showScrollTop ? (
+        <button
+          type="button"
+          aria-label="Scroll to top"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="fixed bottom-5 right-5 z-30 inline-flex h-14 w-14 items-center justify-center rounded-full border-4 border-black bg-[#e30613] text-white shadow-2xl transition hover:-translate-y-1 hover:scale-105 focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-white"
+        >
+          <ScrollTopIcon className="h-6 w-6" />
+        </button>
+      ) : null}
     </main>
   );
 }
