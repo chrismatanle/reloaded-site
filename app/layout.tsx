@@ -27,9 +27,7 @@ export const metadata: Metadata = {
     siteName: "ReLoaded Dawlish",
     images: [
       {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
+        url: "/apple-touch-icon.png",
         alt: "ReLoaded Dawlish social preview logo",
       },
     ],
@@ -39,7 +37,7 @@ export const metadata: Metadata = {
     title: "ReLoaded Dawlish",
     description:
       "Loaded fries, burgers, chicken, tofu and serious flavour at 3 Piermont Place, Dawlish.",
-    images: ["/og-image.png"],
+    images: ["/apple-touch-icon.png"],
   },
   icons: {
     icon: [{ url: "/favicon.ico" }, { url: "/icon.png", type: "image/png" }],
