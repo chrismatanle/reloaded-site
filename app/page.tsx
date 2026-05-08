@@ -1,52 +1,35 @@
 "use client";
 
 import Image from "next/image";
-import { motion, useReducedMotion } from "framer-motion";
-import { Clock, MapPin } from "lucide-react";
+import type { ReactNode, SVGProps } from "react";
 import { useEffect, useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import { Clock, MapPin, Star } from "lucide-react";
+
+type MenuItem = {
+  name: string;
+  price: string;
+  desc?: string;
+  details?: string[];
+};
 
 type MenuSection = {
   title: string;
   subtitle?: string;
-  items: {
-    name: string;
-    price?: string;
-    description?: string;
-    details?: string[];
-  }[];
+  items: MenuItem[];
 };
 
 type VisualAsset = {
+  alt: string;
   label: string;
   src: string;
-  alt: string;
   eager?: boolean;
 };
 
-const socialLinks = [
-  {
-    label: "Instagram",
-    href: "https://instagram.com/reloadeddawlish",
-  },
-  {
-    label: "Facebook",
-    href: "https://facebook.com/reloadeddawlish",
-  },
-] as const;
-
-const lunchSpecial = {
-  badge: "Lunchtime Special",
-  title: "Meal Deal",
+const lunchSpecial: MenuItem = {
+  name: "Meal Deal",
   price: "£10.00",
-  description:
-    "House Cheese Sauce Beef Burger, Seasoned Fries and a can of drink.",
-};
-
-const wingsSpecial = {
-  badge: "Midweek Special",
-  title: "Wings Wednesday",
-  price: "£6",
-  description: "Boneless Chicken Wings",
+  desc: "House Cheese Sauce Beef Burger, Seasoned Fries and a can of drink.",
 };
 
 const menuSections: MenuSection[] = [
@@ -77,12 +60,18 @@ const menuSections: MenuSection[] = [
       {
         name: "Tofu Burger",
         price: "£6.50",
-        description: "Burger Mayo, Lettuce, Tomato & Pickles",
+        desc: "Burger Mayo, Lettuce, Tomato & Pickles",
       },
       {
         name: "Marinated Crispy Tofu",
         price: "£6.00",
-        details: ["Sauce Options:", "Coconut Sriracha", "BBQ", "Hot Korean", "Reloaded Sauce"],
+        details: [
+          "Sauce Options:",
+          "Coconut Sriracha",
+          "BBQ",
+          "Hot Korean",
+          "Reloaded Sauce",
+        ],
       },
     ],
   },
@@ -112,7 +101,7 @@ const menuSections: MenuSection[] = [
     ],
   },
   {
-    title: "ReLoaded House Fries",
+    title: "Reloaded House Fries",
     subtitle: "Cut, fried & seasoned with our house blend",
     items: [
       { name: "Regular", price: "£3.50" },
@@ -139,57 +128,83 @@ const menuSections: MenuSection[] = [
       {
         name: "Jalapeño Cheese Poppers",
         price: "£5.25",
-        description: "House Cheese Sauce, Jalapeños",
+        desc: "House Cheese Sauce, Jalapeños",
       },
       {
         name: "Crispy Calamari",
         price: "£6.00",
-        description: "Served with Tartare Sauce",
+        desc: "Served with Tartare Sauce",
       },
       {
         name: "Halloumi Bites",
         price: "£7.00",
-        description: "Served with Hot Honey",
+        desc: "Served with Hot Honey",
       },
     ],
   },
 ];
 
+const socials = [
+  {
+    label: "Instagram",
+    href: "https://instagram.com/reloadeddawlish",
+  },
+  {
+    label: "Facebook",
+    href: "https://facebook.com/reloadeddawlish",
+  },
+];
+
+const starPositions = [
+  "top-16 left-[8%]",
+  "top-32 right-[12%]",
+  "top-[42%] left-[4%]",
+  "top-[58%] right-[6%]",
+  "bottom-24 left-[16%]",
+  "bottom-32 right-[18%]",
+];
+
 const heroLogo: VisualAsset = {
   label: "ReLoaded Logo",
-  src: "/ReLoaded-Red-on-White-Transp.png",
   alt: "ReLoaded Dawlish logo",
+  src: "/ReLoaded-Red-on-White-Transp.png",
 };
 
 const galleryAssets: VisualAsset[] = [
   {
     label: "Tofu Burger",
+    alt: "ReLoaded tofu burger in a brioche bun",
     src: "/reloaded_crispy_tofu_burger_square.jpg",
-    alt: "ReLoaded tofu burger",
     eager: true,
   },
   {
     label: "Loaded Fries",
+    alt: "ReLoaded loaded fries topped with bacon jam and pickled onion",
     src: "/reloaded-loaded-fries-bacon-jam-and-pickled-onion-square.jpg",
-    alt: "ReLoaded loaded fries",
   },
   {
     label: "Beef Burger",
-    src: "/beef-burger.jpg",
     alt: "ReLoaded beef burger",
+    src: "/beef-burger.jpg",
   },
 ];
 
 const mealDealAsset: VisualAsset = {
   label: "Meal Deal",
-  src: "/meal-deal.jpg",
   alt: "ReLoaded meal deal burger and fries",
+  src: "/meal-deal.jpg",
+};
+
+const wingsSpecial: MenuItem = {
+  name: "Wings Wednesday",
+  price: "£6",
+  desc: "Boneless Chicken Wings",
 };
 
 const wingsSpecialAsset: VisualAsset = {
   label: "Wings Wednesday",
+  alt: "Boneless chicken wings",
   src: "/boneless-wings.jpeg",
-  alt: "Boneless chicken wings from ReLoaded",
 };
 
 const marqueeItems = [
@@ -203,34 +218,61 @@ const marqueeItems = [
   "COOKED FRESH",
 ];
 
-function getCurrentOpenStatus() {
+function getCurrentOpenStatus(date: Date) {
   const parts = new Intl.DateTimeFormat("en-GB", {
-    timeZone: "Europe/London",
     weekday: "short",
-    hour: "2-digit",
-    minute: "2-digit",
+    hour: "numeric",
+    minute: "numeric",
     hour12: false,
-  }).formatToParts(new Date());
+    timeZone: "Europe/London",
+  }).formatToParts(date);
 
   const weekday = parts.find((part) => part.type === "weekday")?.value ?? "";
   const hour = Number(parts.find((part) => part.type === "hour")?.value ?? "0");
   const minute = Number(parts.find((part) => part.type === "minute")?.value ?? "0");
   const totalMinutes = hour * 60 + minute;
-  const lunchWindow = totalMinutes >= 12 * 60 && totalMinutes < 15 * 60;
-  const eveningWindow = totalMinutes >= 17 * 60 && totalMinutes < 20 * 60;
-  const openDay = ["Wed", "Thu", "Fri", "Sat", "Sun"].includes(weekday);
+  const isLunch = totalMinutes >= 12 * 60 && totalMinutes < 15 * 60;
+  const isEvening = totalMinutes >= 17 * 60 && totalMinutes < 20 * 60;
+  const isOpenDay = ["Wed", "Thu", "Fri", "Sat", "Sun"].includes(weekday);
 
-  return openDay && (lunchWindow || eveningWindow);
+  return isOpenDay && (isLunch || isEvening);
 }
 
-function VisualCard({
+function SocialIconInstagram(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.9"
+      aria-hidden="true"
+      {...props}
+    >
+      <rect x="3.25" y="3.25" width="17.5" height="17.5" rx="5.5" />
+      <circle cx="12" cy="12" r="4.2" />
+      <circle cx="17.35" cy="6.65" r="1.1" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+function SocialIconFacebook(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
+      <path d="M13.85 20v-7.12h2.4l.36-2.78h-2.76V8.33c0-.8.22-1.35 1.38-1.35h1.47V4.5c-.7-.1-1.41-.15-2.12-.15-2.1 0-3.55 1.28-3.55 3.64V10.1H8.67v2.78h2.36V20z" />
+    </svg>
+  );
+}
+
+function VisualPlaceholder({
   asset,
-  frameClassName = "",
-  imageClassName = "",
+  className = "",
+  labelClassName = "",
+  imageClassName = "object-cover",
   showLabel = false,
 }: {
   asset: VisualAsset;
-  frameClassName?: string;
+  className?: string;
+  labelClassName?: string;
   imageClassName?: string;
   showLabel?: boolean;
 }) {
@@ -238,386 +280,542 @@ function VisualCard({
 
   return (
     <div
-      className={`relative overflow-hidden rounded-[1.75rem] border border-black/10 bg-white ${frameClassName}`}
+      className={`relative overflow-hidden border-8 border-black bg-white shadow-2xl ${className}`}
     >
       {!hasError ? (
         <Image
           src={asset.src}
           alt={asset.alt}
           fill
-          priority={asset.eager}
+          sizes="(max-width: 768px) 78vw, 33vw"
+          className={imageClassName}
           loading={asset.eager ? "eager" : "lazy"}
-          sizes="(min-width: 1024px) 30vw, 90vw"
-          className={`object-cover ${imageClassName}`}
-          onError={() => setHasError(true)}
+          priority={asset.eager}
+          onError={() => {
+            setHasError(true);
+          }}
         />
-      ) : (
-        <div className="flex h-full w-full items-center justify-center bg-black p-6 text-center text-lg font-black uppercase tracking-[0.35em] text-white">
+      ) : null}
+      {showLabel ? (
+        <div
+          className={`absolute inset-x-0 bottom-0 border-t-4 border-black bg-white px-4 py-3 text-center text-xl font-black uppercase text-black ${labelClassName}`}
+        >
           {asset.label}
         </div>
-      )}
-
-      {showLabel ? (
-        <div className="absolute inset-x-0 bottom-0 bg-white/95 px-4 py-3 text-center text-sm font-black uppercase tracking-[0.3em] text-black backdrop-blur">
-          {asset.label}
+      ) : null}
+      {hasError ? (
+        <div className="absolute inset-0 flex h-full w-full items-end bg-[repeating-linear-gradient(45deg,#e30613_0_18px,#ffffff_18px_36px,#000000_36px_54px)] p-1.5">
+          <div
+            className={`w-full border-4 border-black bg-white px-4 py-3 text-center text-xl font-black uppercase text-black ${labelClassName}`}
+          >
+            {asset.label}
+          </div>
         </div>
       ) : null}
     </div>
   );
 }
 
-function SocialIcon({ label }: { label: string }) {
-  if (label === "Instagram") {
-    return (
-      <svg
-        aria-hidden="true"
-        viewBox="0 0 24 24"
-        className="h-5 w-5"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <rect x="3" y="3" width="18" height="18" rx="5" />
-        <circle cx="12" cy="12" r="4" />
-        <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
-      </svg>
-    );
-  }
+function PopStar({ className = "" }: { className?: string }) {
+  const shouldReduceMotion = useReducedMotion();
 
   return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      className="h-5 w-5"
-      fill="currentColor"
+    <motion.div
+      className={`absolute text-white ${className}`}
+      animate={
+        shouldReduceMotion
+          ? undefined
+          : { rotate: [0, 12, -8, 0], scale: [1, 1.18, 0.96, 1] }
+      }
+      transition={
+        shouldReduceMotion
+          ? undefined
+          : { duration: 2.8, repeat: Infinity, ease: "easeInOut" as const }
+      }
     >
-      <path d="M14 8h2.5V4.5H14c-2.8 0-4.5 1.8-4.5 4.8V12H7v3.5h2.5V22H13v-6.5h3l.5-3.5H13V9.8c0-1.1.3-1.8 1-1.8Z" />
-    </svg>
+      <Star aria-hidden="true" className="h-8 w-8 fill-current" />
+    </motion.div>
   );
 }
 
-export default function HomePage() {
-  const prefersReducedMotion = useReducedMotion();
-  const [isOpen, setIsOpen] = useState(false);
+function Brush({
+  children,
+  className = "",
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <span
+      className={`relative inline-block -rotate-1 bg-black px-5 py-2 text-white shadow-xl ${className}`}
+    >
+      <span className="relative z-10">{children}</span>
+      <span className="absolute -left-3 top-1/2 h-8 w-7 -translate-y-1/2 bg-black blur-[1px]" />
+      <span className="absolute -right-3 top-1/2 h-8 w-7 -translate-y-1/2 bg-black blur-[1px]" />
+    </span>
+  );
+}
+
+export default function ReLoadedOnePage() {
+  const shouldReduceMotion = useReducedMotion();
+  const [isOpen, setIsOpen] = useState(() => getCurrentOpenStatus(new Date()));
   const currentYear = new Date().getFullYear();
 
   useEffect(() => {
-    const updateStatus = () => setIsOpen(getCurrentOpenStatus());
+    const updateStatus = () => setIsOpen(getCurrentOpenStatus(new Date()));
 
     updateStatus();
-    const interval = window.setInterval(updateStatus, 60_000);
-    return () => window.clearInterval(interval);
+    const intervalId = window.setInterval(updateStatus, 60_000);
+
+    return () => window.clearInterval(intervalId);
   }, []);
 
-  const heroAnimation = prefersReducedMotion
-    ? undefined
-    : {
-        y: [0, -10, 0],
-        scale: [1, 1.02, 1],
-        transition: {
-          duration: 5.5,
-          repeat: Number.POSITIVE_INFINITY,
-          ease: "easeInOut" as const,
-        },
-      };
-
-  const marqueeAnimation = prefersReducedMotion
-    ? undefined
-    : {
-        x: ["0%", "-50%"],
-        transition: {
-          duration: 24,
-          repeat: Number.POSITIVE_INFINITY,
-          ease: "linear" as const,
-        },
-      };
-
   return (
-    <main className="min-h-screen bg-[#d11018] text-black">
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-10 px-4 pb-12 pt-5 sm:px-6 lg:px-8">
-        <motion.section
-          initial={prefersReducedMotion ? undefined : { opacity: 0, y: 24 }}
-          animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
-          transition={{ duration: 0.65, ease: "easeOut" }}
-          className="rounded-[2rem] bg-white p-6 shadow-[0_18px_0_#000] sm:p-8 lg:p-10"
-        >
-          <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
-            <motion.div animate={heroAnimation} className="mx-auto w-full max-w-md">
-              <div className="relative aspect-[1.1/1] w-full">
-                <Image
-                  src={heroLogo.src}
-                  alt={heroLogo.alt}
-                  fill
-                  priority
-                  loading="eager"
-                  sizes="(min-width: 1024px) 38vw, 90vw"
-                  className="object-contain"
-                />
-              </div>
-            </motion.div>
+    <main className="min-h-screen overflow-hidden bg-[#e30613] text-black">
+      <div
+        className="pointer-events-none fixed inset-0 opacity-20"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 20% 20%, white 0 2px, transparent 3px), radial-gradient(circle at 80% 40%, white 0 2px, transparent 3px)",
+          backgroundSize: "54px 54px",
+        }}
+      />
 
-            <div className="space-y-5 text-center lg:text-left">
-              <p className="text-sm font-black uppercase tracking-[0.45em] text-[#d11018]">
-                Dawlish Street Food
-              </p>
-              <h1 className="text-4xl font-black uppercase leading-[0.88] tracking-tight text-black sm:text-5xl lg:text-7xl">
-                Loaded fries,
+      {starPositions.map((pos) => (
+        <PopStar key={pos} className={pos} />
+      ))}
+
+      <section className="relative min-h-screen px-5 py-8 md:px-12 md:py-12">
+        <motion.div
+          initial={{ y: -80, rotate: -5, opacity: 0 }}
+          animate={{ y: 0, rotate: -2, opacity: 1 }}
+          transition={
+            shouldReduceMotion
+              ? { duration: 0 }
+              : { type: "spring", stiffness: 90, damping: 12 }
+          }
+          className="mx-auto max-w-6xl bg-white p-5 shadow-2xl md:p-10"
+        >
+          <div className="grid items-center gap-8 md:grid-cols-[1.05fr_0.95fr]">
+            <div>
+              <motion.p
+                initial={{ x: -40, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={shouldReduceMotion ? { duration: 0 } : { delay: 0.25 }}
+                className="mb-3 text-2xl font-black uppercase tracking-tight text-[#e30613] md:text-4xl"
+              >
+                Dawlish... it&apos;s time.
+              </motion.p>
+
+              <motion.h1
+                initial={{ scale: 0.86, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={
+                  shouldReduceMotion
+                    ? { duration: 0 }
+                    : { delay: 0.35, type: "spring", stiffness: 120 }
+                }
+                className="text-6xl font-black uppercase leading-[0.9] tracking-[-0.06em] md:text-8xl lg:text-9xl"
+              >
+                Get
                 <br />
-                burgers and
-                <br />
-                serious flavour.
-              </h1>
-              <p className="mx-auto max-w-2xl text-base font-medium text-black/75 lg:mx-0 lg:text-lg">
-                Fresh-cooked comfort food at 3 Piermont Place, Dawlish. Swing by for
-                steak &amp; shortrib burgers, crispy chicken, tofu and stacked loaded fries.
-              </p>
-              <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center lg:justify-start">
+                ReLoaded
+              </motion.h1>
+
+              <motion.div
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={shouldReduceMotion ? { duration: 0 } : { delay: 0.55 }}
+                className="mt-7"
+              >
+                <Brush className="text-xl font-black uppercase md:text-3xl">
+                  Stop settling for boring food
+                </Brush>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={shouldReduceMotion ? { duration: 0 } : { delay: 0.7 }}
+                className="mt-8 flex flex-wrap gap-3"
+              >
                 <a
                   href="#menu"
-                  className="inline-flex min-h-14 items-center justify-center rounded-full bg-black px-8 py-4 text-center text-sm font-black uppercase tracking-[0.28em] text-white transition hover:-translate-y-0.5 hover:bg-[#1a1a1a] focus:outline-none focus:ring-4 focus:ring-black/20"
+                  className="inline-flex min-h-14 items-center justify-center rounded-full bg-[#e30613] px-7 py-4 text-center text-lg font-black uppercase text-white shadow-xl transition hover:-translate-y-1 hover:rotate-1 hover:scale-105 focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-black"
                 >
-                  View The Menu
+                  View the menu
                 </a>
                 <a
                   href="#visit"
-                  className="inline-flex min-h-14 items-center justify-center rounded-full border-4 border-[#d11018] px-8 py-4 text-center text-sm font-black uppercase tracking-[0.28em] text-[#d11018] transition hover:-translate-y-0.5 hover:bg-[#d11018] hover:text-white focus:outline-none focus:ring-4 focus:ring-[#d11018]/20"
+                  className="inline-flex min-h-14 items-center justify-center rounded-full border-4 border-black bg-white px-7 py-4 text-center text-lg font-black uppercase transition hover:-translate-y-1 hover:-rotate-1 hover:scale-105 focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-black"
                 >
-                  Find Us
+                  Find us
                 </a>
-              </div>
-              {/* TODO: Add a mobile click-to-call button here once the live ReLoaded phone number is confirmed. */}
+              </motion.div>
             </div>
-          </div>
-        </motion.section>
 
-        <section className="grid gap-4 md:grid-cols-3">
-          {galleryAssets.map((asset) => (
-            <div key={asset.label} className="relative aspect-square">
-              <VisualCard
-                asset={asset}
-                showLabel
-                frameClassName="h-full w-full border-8 border-white bg-white shadow-[0_14px_0_#000]"
-              />
-            </div>
-          ))}
-        </section>
-
-        <section className="overflow-hidden rounded-full border-4 border-black bg-black py-4 text-white shadow-[0_10px_0_#fff]">
-          <motion.div
-            animate={marqueeAnimation}
-            className="flex w-max min-w-full gap-6 whitespace-nowrap pl-6 text-sm font-black uppercase tracking-[0.35em] sm:text-base"
-          >
-            {[...marqueeItems, ...marqueeItems].map((item, index) => (
-              <span key={`${item}-${index}`} className="flex items-center gap-6">
-                <span>{item}</span>
-                <span className="text-[#d11018]">•</span>
-              </span>
-            ))}
-          </motion.div>
-        </section>
-
-        <section className="grid gap-5 lg:grid-cols-2">
-          <article className="rounded-[2rem] bg-white p-6 shadow-[0_14px_0_#000]">
-            <div className="mb-5 flex items-start justify-between gap-4">
-              <div className="space-y-3">
-                <span className="inline-flex rounded-full bg-[#d11018] px-4 py-2 text-xs font-black uppercase tracking-[0.3em] text-white">
-                  {lunchSpecial.badge}
-                </span>
-                <h2 className="text-3xl font-black uppercase tracking-tight text-[#d11018]">
-                  {lunchSpecial.title}
-                </h2>
-              </div>
-              <p className="shrink-0 text-2xl font-black text-black">{lunchSpecial.price}</p>
-            </div>
-            <div className="grid gap-5 sm:grid-cols-[minmax(0,1fr)_10rem] sm:items-start">
-              <p className="text-base font-medium leading-relaxed text-black">
-                {lunchSpecial.description}
-              </p>
-              <div className="relative aspect-square w-full max-w-[12rem] justify-self-start sm:justify-self-end">
-                <VisualCard asset={mealDealAsset} frameClassName="h-full w-full border-4 border-black" />
-              </div>
-            </div>
-          </article>
-
-          <article className="rounded-[2rem] bg-white p-6 shadow-[0_14px_0_#000]">
-            <div className="mb-5 flex items-start justify-between gap-4">
-              <div className="space-y-3">
-                <span className="inline-flex rounded-full bg-[#d11018] px-4 py-2 text-xs font-black uppercase tracking-[0.3em] text-white">
-                  {wingsSpecial.badge}
-                </span>
-                <h2 className="text-3xl font-black uppercase tracking-tight text-[#d11018]">
-                  {wingsSpecial.title}
-                </h2>
-              </div>
-              <p className="shrink-0 text-2xl font-black text-black">{wingsSpecial.price}</p>
-            </div>
-            <div className="grid gap-5 sm:grid-cols-[minmax(0,1fr)_10rem] sm:items-start">
-              <p className="text-base font-medium leading-relaxed text-black">
-                {wingsSpecial.description}
-              </p>
-              <div className="relative aspect-square w-full max-w-[12rem] justify-self-start sm:justify-self-end">
-                <VisualCard asset={wingsSpecialAsset} frameClassName="h-full w-full border-4 border-black" />
-              </div>
-            </div>
-          </article>
-        </section>
-
-        <section id="menu" className="space-y-5">
-          <div className="text-center text-white">
-            <p className="text-sm font-black uppercase tracking-[0.4em]">Menu</p>
-            <h2 className="mt-2 text-4xl font-black uppercase tracking-tight sm:text-5xl">
-              Get ReLoaded
-            </h2>
-          </div>
-
-          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {menuSections.map((section) => (
-              <article
-                key={section.title}
-                className="rounded-[2rem] bg-white p-6 shadow-[0_14px_0_#000]"
+            <motion.div
+              initial={{ opacity: 0, rotate: 4, x: 40 }}
+              animate={{ opacity: 1, rotate: 0, x: 0 }}
+              transition={
+                shouldReduceMotion
+                  ? { duration: 0 }
+                  : { delay: 0.45, type: "spring", stiffness: 80 }
+              }
+              className="relative flex min-h-[420px] items-center justify-center"
+            >
+              <motion.div
+                animate={
+                  shouldReduceMotion
+                    ? undefined
+                    : { y: [0, -10, 0], scale: [1, 1.02, 1], rotate: [-1, 1, -1] }
+                }
+                transition={
+                  shouldReduceMotion
+                    ? undefined
+                    : { duration: 3, repeat: Infinity, ease: "easeInOut" as const }
+                }
+                className="relative flex w-full items-center justify-center"
               >
-                <header className="mb-5">
-                  <h3 className="text-2xl font-black uppercase tracking-tight text-[#d11018]">
-                    {section.title === "Tofu Burger + Crispy Tofu" ? (
-                      <>
-                        Tofu Burger
-                        <br />
-                        + Crispy Tofu
-                      </>
-                    ) : (
-                      section.title
-                    )}
-                  </h3>
-                  {section.subtitle ? (
-                    <p className="mt-2 text-sm font-medium leading-relaxed text-black/70">
-                      {section.subtitle}
-                    </p>
-                  ) : null}
-                </header>
+                <VisualPlaceholder
+                  asset={heroLogo}
+                  className="h-56 w-full max-w-[24rem] border-0 bg-transparent shadow-none"
+                  labelClassName="bg-[#fff2b8] py-10 text-3xl md:text-4xl"
+                  imageClassName="object-contain"
+                />
+              </motion.div>
+              <motion.div
+                animate={
+                  shouldReduceMotion
+                    ? undefined
+                    : { rotate: [0, 4, -3, 0], scale: [1, 1.05, 1] }
+                }
+                transition={
+                  shouldReduceMotion ? undefined : { duration: 2.2, repeat: Infinity }
+                }
+                className="absolute right-0 top-0 rounded-full bg-black p-6 text-center text-3xl font-black uppercase text-white shadow-xl"
+              >
+                Come
+                <br />
+                and
+                <br />
+                see us!
+              </motion.div>
+            </motion.div>
+          </div>
+        </motion.div>
 
+        <div className="mx-auto mt-5 max-w-6xl">
+          <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 md:grid md:grid-cols-3 md:overflow-visible">
+            {galleryAssets.map((asset, index) => (
+              <motion.div
+                key={asset.label}
+                initial={{ opacity: 0, y: 30, rotate: index % 2 === 0 ? -2 : 2 }}
+                whileInView={{ opacity: 1, y: 0, rotate: 0 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={
+                  shouldReduceMotion
+                    ? { duration: 0 }
+                    : {
+                        delay: 0.1 * index,
+                        type: "spring",
+                        stiffness: 110,
+                        damping: 16,
+                      }
+                }
+                className="aspect-square min-w-[78vw] snap-center md:min-w-0"
+              >
+                <VisualPlaceholder
+                  asset={asset}
+                  className="h-full w-full"
+                  labelClassName="py-3"
+                  showLabel
+                />
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <div className="relative w-full rotate-[-1deg] overflow-hidden bg-black py-4 text-white">
+        <motion.div
+          animate={shouldReduceMotion ? undefined : { x: [0, -900] }}
+          transition={
+            shouldReduceMotion
+              ? undefined
+              : { duration: 18, repeat: Infinity, ease: "linear" as const }
+          }
+          className="flex whitespace-nowrap text-3xl font-black uppercase tracking-tight"
+        >
+          {Array.from({ length: 4 }).map((_, i) => (
+            <span key={i} className="mx-6">
+              {marqueeItems.join(" • ")} •
+            </span>
+          ))}
+        </motion.div>
+      </div>
+
+      <section id="menu" className="relative px-5 py-20 md:px-12">
+        <div className="mx-auto max-w-6xl">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-120px" }}
+            transition={shouldReduceMotion ? { duration: 0 } : undefined}
+            className="mb-10 rotate-1 bg-white p-6 shadow-2xl md:p-8"
+          >
+            <p className="text-2xl font-black uppercase text-[#e30613]">
+              Everything cooked fresh.
+            </p>
+            <h2 className="text-5xl font-black uppercase leading-none tracking-[-0.05em] md:text-8xl">
+              Everything packed with flavour.
+            </h2>
+          </motion.div>
+
+          <div className="mb-8 grid gap-6 md:grid-cols-2">
+            <motion.article
+              initial={{ opacity: 0, y: 60, rotate: -3 }}
+              whileInView={{ opacity: 1, y: 0, rotate: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={
+                shouldReduceMotion
+                  ? { duration: 0 }
+                  : { type: "spring", stiffness: 110, damping: 16 }
+              }
+              className="border-8 border-black bg-[#fff2b8] p-6 shadow-2xl"
+            >
+              <div className="mb-4 inline-flex rotate-[-2deg] bg-[#e30613] px-4 py-2 text-sm font-black uppercase tracking-[0.18em] text-white shadow-lg">
+                Lunchtime Special
+              </div>
+              <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+                <div className="flex-1">
+                  <h3 className="text-4xl font-black uppercase leading-none text-black md:text-5xl">
+                    {lunchSpecial.name}
+                  </h3>
+                  <p className="mt-3 text-lg font-bold text-neutral-800">
+                    {lunchSpecial.desc}
+                  </p>
+                </div>
+                <div className="flex shrink-0 flex-col items-start gap-3 sm:items-end">
+                  <VisualPlaceholder
+                    asset={mealDealAsset}
+                    className="aspect-square w-36 sm:w-44"
+                    labelClassName="bg-[#fff2b8] py-8 text-sm"
+                  />
+                  <p className="text-3xl font-black text-[#e30613] md:text-4xl">
+                    {lunchSpecial.price}
+                  </p>
+                </div>
+              </div>
+            </motion.article>
+
+            <motion.article
+              initial={{ opacity: 0, y: 60, rotate: 3 }}
+              whileInView={{ opacity: 1, y: 0, rotate: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={
+                shouldReduceMotion
+                  ? { duration: 0 }
+                  : { type: "spring", stiffness: 110, damping: 16, delay: 0.05 }
+              }
+              className="border-8 border-black bg-white p-6 shadow-2xl"
+            >
+              <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+                <div className="flex-1">
+                  <h3 className="text-4xl font-black uppercase leading-none text-[#e30613] md:text-5xl">
+                    {wingsSpecial.name}
+                  </h3>
+                  <p className="mt-3 text-lg font-bold text-neutral-800">
+                    {wingsSpecial.desc}
+                  </p>
+                </div>
+                <div className="flex shrink-0 flex-col items-start gap-3 sm:items-end">
+                  <VisualPlaceholder
+                    asset={wingsSpecialAsset}
+                    className="aspect-square w-36 sm:w-44"
+                    labelClassName="py-8 text-sm"
+                  />
+                  <p className="text-3xl font-black text-[#e30613] md:text-4xl">
+                    {wingsSpecial.price}
+                  </p>
+                </div>
+              </div>
+            </motion.article>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {menuSections.map((section, index) => (
+              <motion.article
+                key={section.title}
+                initial={{ opacity: 0, y: 70, rotate: -4 }}
+                whileInView={{ opacity: 1, y: 0, rotate: index % 2 ? 2 : -2 }}
+                whileHover={
+                  shouldReduceMotion ? undefined : { y: -8, rotate: 0, scale: 1.02 }
+                }
+                viewport={{ once: true, margin: "-100px" }}
+                transition={
+                  shouldReduceMotion
+                    ? { duration: 0 }
+                    : { type: "spring", stiffness: 100, damping: 14 }
+                }
+                className="bg-white p-5 shadow-2xl"
+              >
+                <div className="mb-5 flex items-center gap-3 border-b-4 border-black pb-4">
+                  <span className="h-4 w-4 shrink-0 rotate-45 bg-[#e30613]" aria-hidden="true" />
+                  <div>
+                    <h3 className="text-2xl font-black uppercase leading-none text-[#e30613]">
+                      {section.title === "Tofu Burger + Crispy Tofu" ? (
+                        <>
+                          Tofu Burger
+                          <br />
+                          + Crispy Tofu
+                        </>
+                      ) : (
+                        section.title
+                      )}
+                    </h3>
+                    {section.subtitle ? (
+                      <p className="mt-2 max-w-md text-sm font-bold normal-case text-neutral-700">
+                        {section.subtitle}
+                      </p>
+                    ) : null}
+                  </div>
+                </div>
                 <div className="space-y-5">
                   {section.items.map((item) => (
-                    <div key={`${section.title}-${item.name}`} className="border-t border-black/10 pt-4 first:border-t-0 first:pt-0">
+                    <div key={item.name}>
                       <div className="flex items-start justify-between gap-4">
-                        <h4 className="max-w-[75%] text-base font-black uppercase leading-snug text-black">
+                        <h4 className="max-w-[18rem] text-xl font-black uppercase">
                           {item.name}
                         </h4>
-                        {item.price ? (
-                          <p className="shrink-0 text-right text-base font-black text-[#d11018]">
-                            {item.price}
-                          </p>
-                        ) : null}
+                        <p className="min-w-[5.5rem] shrink-0 text-right text-xl font-black">
+                          {item.price}
+                        </p>
                       </div>
-                      {item.description ? (
-                        <p className="mt-2 text-sm font-medium leading-relaxed text-black/70">
-                          {item.description}
+                      {item.desc ? (
+                        <p className="mt-1 text-sm font-bold leading-snug text-neutral-700">
+                          {item.desc}
                         </p>
                       ) : null}
                       {item.details ? (
-                        <div className="mt-3 space-y-1 text-sm font-medium leading-relaxed text-black/75">
-                          {item.details.map((detail) => {
-                            if (detail === "Sauce Options:") {
-                              return (
-                                <p key={detail} className="font-black uppercase tracking-[0.2em] text-[#d11018]">
-                                  {detail}
-                                </p>
-                              );
-                            }
-
-                            if (detail.toLowerCase() === "or") {
-                              return (
-                                <p key={detail} className="py-1 text-center font-black uppercase tracking-[0.35em] text-black">
-                                  OR
-                                </p>
-                              );
-                            }
-
-                            return <p key={detail}>{detail}</p>;
-                          })}
-                        </div>
+                        <ul className="mt-2 space-y-1 text-sm font-bold leading-snug text-neutral-700">
+                          {item.details.map((detail) => (
+                            <li
+                              key={detail}
+                              className={
+                                detail === "Sauce Options:"
+                                  ? "pt-1 font-black uppercase text-[#e30613]"
+                                  : detail === "or"
+                                    ? "py-1 text-center font-black uppercase tracking-[0.2em] text-black"
+                                    : ""
+                              }
+                            >
+                              {detail === "or" ? "OR" : detail}
+                            </li>
+                          ))}
+                        </ul>
                       ) : null}
                     </div>
                   ))}
                 </div>
-              </article>
+              </motion.article>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section id="visit" className="grid gap-5 lg:grid-cols-3">
-          <article className="rounded-[2rem] bg-white p-6 shadow-[0_14px_0_#000]">
-            <div className="mb-4 flex items-center gap-3">
-              <Clock className="h-6 w-6 text-[#d11018]" />
-              <h3 className="text-2xl font-black uppercase tracking-tight text-black">
-                Opening Times
-              </h3>
-            </div>
+      <section id="visit" className="relative bg-white px-5 py-20 md:px-12">
+        <div className="mx-auto grid max-w-6xl gap-8 md:grid-cols-2">
+          <motion.div
+            initial={{ opacity: 0, x: -60 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={shouldReduceMotion ? { duration: 0 } : undefined}
+            className="bg-[#e30613] p-8 text-white shadow-2xl"
+          >
+            <Clock className="mb-4 h-12 w-12" />
             <div
-              className={`inline-flex rounded-full border-2 border-black px-4 py-2 text-xs font-black uppercase tracking-[0.28em] text-black ${
-                isOpen ? "animate-pulse bg-white" : "bg-white"
+              className={`mb-5 inline-flex rounded-full px-4 py-2 text-base font-black uppercase shadow-lg ${
+                isOpen ? "animate-pulse bg-white text-black" : "bg-white text-black"
               }`}
             >
               {isOpen ? "Currently Open" : "Currently Closed"}
             </div>
-            <div className="mt-5 space-y-1 text-lg font-black uppercase text-[#d11018]">
-              <p>Wed-Sun</p>
-              <p>12-3pm</p>
-              <p>5-8pm</p>
+            <div className="space-y-1">
+              <p className="text-3xl font-black uppercase tracking-[-0.05em] md:text-4xl">
+                Wed-Sun
+              </p>
+              <p className="text-5xl font-black uppercase tracking-[-0.05em] md:text-7xl">
+                12-3pm
+              </p>
+              <p className="text-5xl font-black uppercase tracking-[-0.05em] md:text-7xl">
+                5-8pm
+              </p>
             </div>
-            <p className="mt-4 text-sm font-medium leading-relaxed text-black/70">
+            <p className="mt-5 max-w-md text-xl font-black uppercase">
               Late opening may flex depending on demand - keep an eye on socials.
             </p>
-          </article>
+          </motion.div>
 
-          <article className="rounded-[2rem] bg-white p-6 shadow-[0_14px_0_#000]">
-            <div className="mb-4 flex items-center gap-3">
-              <MapPin className="h-6 w-6 text-[#d11018]" />
-              <h3 className="text-2xl font-black uppercase tracking-tight text-black">
-                Location
-              </h3>
-            </div>
-            <div className="space-y-1 text-lg font-black uppercase text-[#d11018]">
-              <p>3 Piermont Place</p>
-              <p>Dawlish</p>
-            </div>
-          </article>
-
-          <article className="rounded-[2rem] bg-white p-6 shadow-[0_14px_0_#000]">
-            <h3 className="mb-4 text-2xl font-black uppercase tracking-tight text-black">
-              Socials
-            </h3>
-            <div className="flex flex-col gap-3">
-              {socialLinks.map(({ label, href }) => (
+          <motion.div
+            initial={{ opacity: 0, x: 60 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={shouldReduceMotion ? { duration: 0 } : undefined}
+            className="border-8 border-black bg-white p-8 shadow-2xl"
+          >
+            <MapPin className="mb-4 h-12 w-12 text-[#e30613]" />
+            <p className="text-2xl font-black uppercase text-[#e30613]">Find us</p>
+            <h2 className="text-5xl font-black uppercase tracking-[-0.05em] md:text-6xl">
+              3 Piermont Place
+            </h2>
+            <p className="mt-3 text-3xl font-black uppercase">Dawlish</p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              {socials.map(({ label, href }) => (
                 <a
                   key={label}
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-between rounded-full bg-black px-5 py-4 text-sm font-black uppercase tracking-[0.28em] text-white transition hover:-translate-y-0.5 hover:bg-[#1a1a1a] focus:outline-none focus:ring-4 focus:ring-black/20"
+                  aria-label={`${label} (opens in a new tab)`}
+                  className="group inline-flex items-center gap-2 rounded-full bg-black px-5 py-3 text-lg font-black uppercase text-white transition hover:-translate-y-1 hover:bg-[#e30613] focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#e30613]"
                 >
-                  <span>{label}</span>
-                  <SocialIcon label={label} />
+                  {label === "Instagram" ? (
+                    <SocialIconInstagram className="h-5 w-5 transition group-hover:rotate-12" />
+                  ) : (
+                    <SocialIconFacebook className="h-5 w-5 transition group-hover:rotate-12" />
+                  )}{" "}
+                  {label}
                 </a>
               ))}
             </div>
-          </article>
-        </section>
+          </motion.div>
+        </div>
+      </section>
 
-        <footer className="rounded-[2rem] bg-black px-6 py-5 text-center text-sm font-medium text-white shadow-[0_10px_0_#fff]">
+      <footer className="relative overflow-hidden bg-black px-5 py-12 text-center text-white">
+        <motion.p
+          animate={shouldReduceMotion ? undefined : { scale: [1, 1.05, 1] }}
+          transition={
+            shouldReduceMotion ? undefined : { duration: 1.8, repeat: Infinity }
+          }
+          className="text-5xl font-black uppercase tracking-[-0.06em] md:text-8xl"
+        >
+          Let&apos;s get ReLoaded
+        </motion.p>
+        <div className="mt-5 space-y-2 text-sm font-bold uppercase tracking-[0.14em] text-white/80">
           <p>© {currentYear} ReLoaded Dawlish</p>
-          <p className="mt-2">
+          <p>
             Design by{" "}
             <a
               href="mailto:info@onecre8tive.co.uk"
-              className="font-black uppercase tracking-[0.2em] text-[#d11018] underline decoration-transparent transition hover:decoration-current"
+              className="text-white underline decoration-[#e30613] underline-offset-4"
             >
               One Cre8tive
             </a>
           </p>
-        </footer>
-      </div>
+        </div>
+      </footer>
     </main>
   );
 }
