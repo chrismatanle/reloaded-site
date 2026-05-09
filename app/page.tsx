@@ -393,6 +393,117 @@ function Brush({
   );
 }
 
+function ReLoadedMapIllustration() {
+  return (
+    <svg
+      viewBox="0 0 720 420"
+      role="img"
+      aria-labelledby="reloaded-map-title reloaded-map-desc"
+      className="h-full w-full"
+    >
+      <title id="reloaded-map-title">Illustrated map showing ReLoaded in Dawlish</title>
+      <desc id="reloaded-map-desc">
+        A stylised red, white and black map with nearby labels for The Strand,
+        Dawlish Station and Sea Front.
+      </desc>
+      <rect width="720" height="420" rx="18" fill="#fff" />
+      <path
+        d="M42 332 C150 280 235 312 332 252 C428 192 510 214 668 112"
+        fill="none"
+        stroke="#e30613"
+        strokeWidth="54"
+        strokeLinecap="round"
+      />
+      <path
+        d="M42 332 C150 280 235 312 332 252 C428 192 510 214 668 112"
+        fill="none"
+        stroke="#000"
+        strokeWidth="20"
+        strokeLinecap="round"
+      />
+      <path
+        d="M108 70 L192 156 L280 118 L372 170 L482 122 L626 202"
+        fill="none"
+        stroke="#000"
+        strokeWidth="16"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M88 236 L190 218 L300 272 L400 244 L526 292 L654 266"
+        fill="none"
+        stroke="#000"
+        strokeWidth="16"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M102 382 C196 356 284 366 364 338 C446 310 520 314 652 334"
+        fill="none"
+        stroke="#e30613"
+        strokeWidth="12"
+        strokeLinecap="round"
+      />
+      <g opacity="0.95">
+        <rect x="66" y="46" width="142" height="46" rx="0" fill="#e30613" />
+        <text
+          x="137"
+          y="77"
+          textAnchor="middle"
+          fill="#fff"
+          fontSize="24"
+          fontWeight="900"
+        >
+          THE STRAND
+        </text>
+      </g>
+      <g>
+        <rect x="466" y="312" width="172" height="48" rx="0" fill="#000" />
+        <text
+          x="552"
+          y="344"
+          textAnchor="middle"
+          fill="#fff"
+          fontSize="23"
+          fontWeight="900"
+        >
+          SEA FRONT
+        </text>
+      </g>
+      <g>
+        <rect x="392" y="48" width="214" height="48" rx="0" fill="#fff" stroke="#000" strokeWidth="8" />
+        <text
+          x="499"
+          y="80"
+          textAnchor="middle"
+          fill="#000"
+          fontSize="23"
+          fontWeight="900"
+        >
+          DAWLISH STATION
+        </text>
+      </g>
+      <g transform="translate(321 148)">
+        <path
+          d="M62 0C29 0 2 27 2 60c0 49 60 112 60 112s60-63 60-112C122 27 95 0 62 0Z"
+          fill="#e30613"
+          stroke="#000"
+          strokeWidth="10"
+        />
+        <circle cx="62" cy="58" r="24" fill="#fff" stroke="#000" strokeWidth="8" />
+      </g>
+      <g transform="translate(418 172) rotate(-3)">
+        <rect x="0" y="0" width="170" height="60" fill="#fff" stroke="#000" strokeWidth="8" />
+        <text x="85" y="39" textAnchor="middle" fill="#e30613" fontSize="31" fontWeight="900">
+          ReLoaded
+        </text>
+      </g>
+      <circle cx="252" cy="136" r="13" fill="#fff" stroke="#000" strokeWidth="8" />
+      <circle cx="584" cy="208" r="13" fill="#e30613" stroke="#000" strokeWidth="8" />
+    </svg>
+  );
+}
+
 export default function ReLoadedOnePage() {
   const shouldReduceMotion = useReducedMotion();
   const [isOpen, setIsOpen] = useState(() => getCurrentOpenStatus(new Date()));
@@ -866,6 +977,46 @@ export default function ReLoadedOnePage() {
               ))}
             </div>
           </motion.div>
+
+          <motion.article
+            initial={{ opacity: 0, y: 48, rotate: -2 }}
+            whileInView={{ opacity: 1, y: 0, rotate: -1 }}
+            whileHover={shouldReduceMotion ? undefined : { y: -6, rotate: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={
+              shouldReduceMotion
+                ? { duration: 0 }
+                : { type: "spring", stiffness: 100, damping: 16 }
+            }
+            className="border-8 border-black bg-white p-5 shadow-[12px_12px_0_#000] md:col-span-2 md:p-7"
+          >
+            <div className="grid gap-6 lg:grid-cols-[0.82fr_1.18fr] lg:items-center">
+              <div>
+                <div className="mb-5 inline-flex rotate-[-2deg] bg-[#e30613] px-4 py-2 text-sm font-black uppercase tracking-[0.18em] text-white shadow-lg">
+                  Dawlish
+                </div>
+                <h2 className="text-6xl font-black uppercase leading-none tracking-[-0.06em] text-[#e30613] md:text-8xl">
+                  FIND US
+                </h2>
+                <address className="mt-5 not-italic text-3xl font-black uppercase leading-tight md:text-5xl">
+                  3 Piermont Place
+                  <br />
+                  Dawlish
+                </address>
+                <a
+                  href="https://share.google/caOXAEYzmXagoQAOS"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-7 inline-flex min-h-14 items-center justify-center rounded-full bg-black px-7 py-4 text-center text-base font-black uppercase text-white transition hover:-translate-y-1 hover:rotate-1 hover:bg-[#e30613] focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#e30613] md:text-lg"
+                >
+                  Open in Google Maps
+                </a>
+              </div>
+              <div className="relative min-h-[250px] overflow-hidden border-8 border-black bg-white shadow-[8px_8px_0_#e30613] sm:min-h-[320px]">
+                <ReLoadedMapIllustration />
+              </div>
+            </div>
+          </motion.article>
         </div>
       </section>
 
