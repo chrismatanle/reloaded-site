@@ -436,117 +436,6 @@ function Brush({
   );
 }
 
-function ReLoadedMapIllustration() {
-  return (
-    <svg
-      viewBox="0 0 720 420"
-      role="img"
-      aria-labelledby="reloaded-map-title reloaded-map-desc"
-      className="h-full w-full"
-    >
-      <title id="reloaded-map-title">Illustrated map showing ReLoaded in Dawlish</title>
-      <desc id="reloaded-map-desc">
-        A stylised red, white and black map with nearby labels for The Strand,
-        Dawlish Station and Sea Front.
-      </desc>
-      <rect width="720" height="420" rx="18" fill="#fff" />
-      <path
-        d="M42 332 C150 280 235 312 332 252 C428 192 510 214 668 112"
-        fill="none"
-        stroke="#e30613"
-        strokeWidth="54"
-        strokeLinecap="round"
-      />
-      <path
-        d="M42 332 C150 280 235 312 332 252 C428 192 510 214 668 112"
-        fill="none"
-        stroke="#000"
-        strokeWidth="20"
-        strokeLinecap="round"
-      />
-      <path
-        d="M108 70 L192 156 L280 118 L372 170 L482 122 L626 202"
-        fill="none"
-        stroke="#000"
-        strokeWidth="16"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M88 236 L190 218 L300 272 L400 244 L526 292 L654 266"
-        fill="none"
-        stroke="#000"
-        strokeWidth="16"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M102 382 C196 356 284 366 364 338 C446 310 520 314 652 334"
-        fill="none"
-        stroke="#e30613"
-        strokeWidth="12"
-        strokeLinecap="round"
-      />
-      <g opacity="0.95">
-        <rect x="66" y="46" width="142" height="46" rx="0" fill="#e30613" />
-        <text
-          x="137"
-          y="77"
-          textAnchor="middle"
-          fill="#fff"
-          fontSize="24"
-          fontWeight="900"
-        >
-          THE STRAND
-        </text>
-      </g>
-      <g>
-        <rect x="466" y="312" width="172" height="48" rx="0" fill="#000" />
-        <text
-          x="552"
-          y="344"
-          textAnchor="middle"
-          fill="#fff"
-          fontSize="23"
-          fontWeight="900"
-        >
-          SEA FRONT
-        </text>
-      </g>
-      <g>
-        <rect x="392" y="48" width="214" height="48" rx="0" fill="#fff" stroke="#000" strokeWidth="8" />
-        <text
-          x="499"
-          y="80"
-          textAnchor="middle"
-          fill="#000"
-          fontSize="23"
-          fontWeight="900"
-        >
-          DAWLISH STATION
-        </text>
-      </g>
-      <g transform="translate(321 148)">
-        <path
-          d="M62 0C29 0 2 27 2 60c0 49 60 112 60 112s60-63 60-112C122 27 95 0 62 0Z"
-          fill="#e30613"
-          stroke="#000"
-          strokeWidth="10"
-        />
-        <circle cx="62" cy="58" r="24" fill="#fff" stroke="#000" strokeWidth="8" />
-      </g>
-      <g transform="translate(418 172) rotate(-3)">
-        <rect x="0" y="0" width="170" height="60" fill="#fff" stroke="#000" strokeWidth="8" />
-        <text x="85" y="39" textAnchor="middle" fill="#e30613" fontSize="31" fontWeight="900">
-          ReLoaded
-        </text>
-      </g>
-      <circle cx="252" cy="136" r="13" fill="#fff" stroke="#000" strokeWidth="8" />
-      <circle cx="584" cy="208" r="13" fill="#e30613" stroke="#000" strokeWidth="8" />
-    </svg>
-  );
-}
-
 export default function ReLoadedOnePage() {
   const shouldReduceMotion = useReducedMotion();
   const [isOpen, setIsOpen] = useState(() => getCurrentOpenStatus(new Date()));
@@ -1079,11 +968,9 @@ export default function ReLoadedOnePage() {
             className="border-8 border-black bg-white p-8 shadow-2xl"
           >
             <MapPin className="mb-4 h-12 w-12 text-[#e30613]" />
-            <p className="text-2xl font-black uppercase text-[#e30613]">Find us</p>
-            <h2 className="text-5xl font-black uppercase tracking-[-0.05em] md:text-6xl">
-              3 Piermont Place
+            <h2 className="text-5xl font-black uppercase leading-none tracking-[-0.05em] text-[#e30613] md:text-6xl">
+              CONNECT WITH US
             </h2>
-            <p className="mt-3 text-3xl font-black uppercase">Dawlish</p>
             <div className="mt-8 flex flex-wrap gap-3">
               {socials.map(({ label, href }) => (
                 <a
@@ -1092,7 +979,7 @@ export default function ReLoadedOnePage() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`${label} (opens in a new tab)`}
-                  className="group inline-flex items-center gap-2 rounded-full bg-black px-4 py-3 text-base font-black uppercase text-white transition hover:-translate-y-1 hover:bg-[#e30613] focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#e30613]"
+                  className="group inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-full bg-black px-4 py-3 text-sm font-black uppercase text-white transition hover:-translate-y-1 hover:bg-[#e30613] focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#e30613] sm:flex-none sm:text-base"
                 >
                   {label === "Instagram" ? (
                     <SocialIconInstagram className="h-5 w-5 transition group-hover:rotate-12" />
@@ -1142,7 +1029,13 @@ export default function ReLoadedOnePage() {
                 </a>
               </div>
               <div className="relative min-h-[250px] overflow-hidden border-8 border-black bg-white shadow-[8px_8px_0_#e30613] sm:min-h-[320px]">
-                <ReLoadedMapIllustration />
+                <iframe
+                  title="Google Map showing ReLoaded at 3 Piermont Place, Dawlish"
+                  src="https://www.google.com/maps?q=ReLoaded%2C%203%20Piermont%20Place%2C%20Dawlish%20EX7%209PH&z=17&output=embed"
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="absolute inset-0 h-full w-full"
+                />
               </div>
             </div>
           </motion.article>
