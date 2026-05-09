@@ -16,6 +16,7 @@ type MenuItem = {
 type MenuSection = {
   title: string;
   subtitle?: string;
+  image: VisualAsset;
   items: MenuItem[];
 };
 
@@ -36,6 +37,11 @@ const menuSections: MenuSection[] = [
   {
     title: "Steak & ShortRib Burgers",
     subtitle: "4oz Steak & ShortRib Burger, in a brioche bun served with:",
+    image: {
+      label: "Steak & Shortrib Burger",
+      alt: "ReLoaded steak and shortrib burger in a brioche bun",
+      src: "/beef-burger.jpg",
+    },
     items: [
       { name: "Ketchup, Mustard & Pickles", price: "£6.50" },
       { name: "House Cheese Sauce", price: "£7.50" },
@@ -56,6 +62,11 @@ const menuSections: MenuSection[] = [
   },
   {
     title: "Tofu Burger + Crispy Tofu",
+    image: {
+      label: "Tofu Burger",
+      alt: "ReLoaded crispy tofu burger with lettuce, tomato and pickles",
+      src: "/reloaded_crispy_tofu_burger_square.jpg",
+    },
     items: [
       {
         name: "Tofu Burger",
@@ -77,6 +88,11 @@ const menuSections: MenuSection[] = [
   },
   {
     title: "Chicken",
+    image: {
+      label: "Chicken Burger",
+      alt: "ReLoaded crispy chicken burger in a brioche bun",
+      src: "/chicken-burger.jpg",
+    },
     items: [
       {
         name: "Crispy Breaded Chicken Tenders",
@@ -103,6 +119,11 @@ const menuSections: MenuSection[] = [
   {
     title: "Reloaded House Fries",
     subtitle: "Cut, fried & seasoned with our house blend",
+    image: {
+      label: "House Fries",
+      alt: "ReLoaded loaded fries with jalapeños",
+      src: "/reloaded_loaded_fries_jalapenos_square.jpg",
+    },
     items: [
       { name: "Regular", price: "£3.50" },
       { name: "Large", price: "£4.50" },
@@ -110,6 +131,11 @@ const menuSections: MenuSection[] = [
   },
   {
     title: "Loaded Fries",
+    image: {
+      label: "Loaded Fries",
+      alt: "ReLoaded loaded fries with bacon jam and pickled red onion",
+      src: "/reloaded-loaded-fries-bacon-jam-and-pickled-onion-square.jpg",
+    },
     items: [
       { name: "House Cheese Sauce", price: "£5.50" },
       {
@@ -124,6 +150,11 @@ const menuSections: MenuSection[] = [
   },
   {
     title: "Sides",
+    image: {
+      label: "Boneless Wings",
+      alt: "ReLoaded boneless chicken wings with sauce",
+      src: "/boneless-wings.jpeg",
+    },
     items: [
       {
         name: "Jalapeño Cheese Poppers",
@@ -162,12 +193,8 @@ const socials = [
 const starPositions = [
   "top-[9%] left-[8%]",
   "top-[18%] right-[14%]",
-  "top-[31%] left-[16%]",
   "top-[44%] right-[22%]",
-  "top-[57%] left-[10%]",
   "top-[69%] right-[12%]",
-  "top-[82%] left-[18%]",
-  "top-[92%] right-[20%]",
 ];
 
 const heroLogo: VisualAsset = {
@@ -212,49 +239,6 @@ const wingsSpecialAsset: VisualAsset = {
   alt: "Boneless chicken wings",
   src: "/boneless-wings.jpeg",
 };
-
-const foodGalleryAssets: VisualAsset[] = [
-  {
-    label: "Steak & Shortrib Burger",
-    alt: "ReLoaded steak and shortrib burger in a brioche bun",
-    src: "/beef-burger.jpg",
-  },
-  {
-    label: "Loaded Fries",
-    alt: "ReLoaded loaded fries with bacon jam and pickled red onion",
-    src: "/reloaded-loaded-fries-bacon-jam-and-pickled-onion-square.jpg",
-  },
-  {
-    label: "Tofu Burger",
-    alt: "ReLoaded crispy tofu burger with lettuce, tomato and pickles",
-    src: "/reloaded_crispy_tofu_burger_square.jpg",
-  },
-  {
-    label: "Chicken Burger",
-    alt: "ReLoaded crispy chicken burger in a brioche bun",
-    src: "/chicken-burger.jpg",
-  },
-  {
-    label: "Boneless Wings",
-    alt: "ReLoaded boneless chicken wings with sauce",
-    src: "/boneless-wings.jpeg",
-  },
-  {
-    label: "Meal Deal",
-    alt: "ReLoaded meal deal with burger, fries and a drink",
-    src: "/meal-deal.jpg",
-  },
-  {
-    label: "Chicken Tenders",
-    alt: "ReLoaded crispy chicken tenders",
-    src: "/reloaded_chicken_tenders.jpg",
-  },
-  {
-    label: "Jalapeño Poppers",
-    alt: "ReLoaded jalapeño cheese poppers with house cheese sauce",
-    src: "/reloaded_jalapeno_poppers_square.jpg",
-  },
-];
 
 const marqueeItems = [
   "LOADED FRIES",
@@ -675,14 +659,14 @@ export default function ReLoadedOnePage() {
         </motion.div>
       </div>
 
-      <section id="menu" className="relative z-10 px-5 py-20 md:px-12">
+      <section id="menu" className="relative z-10 px-5 py-16 md:px-12">
         <div className="mx-auto max-w-6xl">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-120px" }}
             transition={shouldReduceMotion ? { duration: 0 } : undefined}
-            className="mb-10 rotate-1 bg-white p-6 shadow-2xl md:p-8"
+            className="mb-8 rotate-1 bg-white p-6 shadow-2xl md:p-8"
           >
             <p className="text-2xl font-black uppercase text-[#e30613]">
               Everything cooked fresh.
@@ -692,7 +676,7 @@ export default function ReLoadedOnePage() {
             </h2>
           </motion.div>
 
-          <div className="mb-8 grid gap-6 md:grid-cols-2">
+          <div className="mb-10 grid items-stretch gap-5 md:grid-cols-2">
             <motion.article
               initial={{ opacity: 0, y: 60, rotate: -3 }}
               whileInView={{ opacity: 1, y: 0, rotate: 0 }}
@@ -702,12 +686,12 @@ export default function ReLoadedOnePage() {
                   ? { duration: 0 }
                   : { type: "spring", stiffness: 110, damping: 16 }
               }
-              className="border-8 border-black bg-white p-6 shadow-2xl"
+              className="flex h-full flex-col border-8 border-black bg-white p-5 shadow-2xl md:p-6"
             >
               <div className="mb-4 inline-flex rotate-[-2deg] bg-[#e30613] px-4 py-2 text-sm font-black uppercase tracking-[0.18em] text-white shadow-lg">
                 Lunchtime Special
               </div>
-              <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+              <div className="flex flex-1 flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
                 <div className="flex-1">
                   <h3 className="text-4xl font-black uppercase leading-none text-[#e30613] md:text-5xl">
                     {lunchSpecial.name}
@@ -719,7 +703,7 @@ export default function ReLoadedOnePage() {
                 <div className="flex shrink-0 flex-col items-start gap-3 sm:items-end">
                   <VisualPlaceholder
                     asset={mealDealAsset}
-                    className="aspect-square w-36 sm:w-44"
+                    className="aspect-square w-32 sm:w-36"
                     labelClassName="bg-[#fff2b8] py-8 text-sm"
                   />
                   <p className="text-3xl font-black text-[#e30613] md:text-4xl">
@@ -738,12 +722,12 @@ export default function ReLoadedOnePage() {
                   ? { duration: 0 }
                   : { type: "spring", stiffness: 110, damping: 16, delay: 0.05 }
               }
-              className="border-8 border-black bg-white p-6 shadow-2xl"
+              className="flex h-full flex-col border-8 border-black bg-white p-5 shadow-2xl md:p-6"
             >
               <div className="mb-4 inline-flex rotate-[-2deg] bg-[#e30613] px-4 py-2 text-sm font-black uppercase tracking-[0.18em] text-white shadow-lg">
                 Midweek Special
               </div>
-              <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+              <div className="flex flex-1 flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
                 <div className="flex-1">
                   <h3 className="text-4xl font-black uppercase leading-none text-[#e30613] md:text-5xl">
                     {wingsSpecial.name}
@@ -755,7 +739,7 @@ export default function ReLoadedOnePage() {
                 <div className="flex shrink-0 flex-col items-start gap-3 sm:items-end">
                   <VisualPlaceholder
                     asset={wingsSpecialAsset}
-                    className="aspect-square w-36 sm:w-44"
+                    className="aspect-square w-32 sm:w-36"
                     labelClassName="py-8 text-sm"
                   />
                   <p className="text-3xl font-black text-[#e30613] md:text-4xl">
@@ -766,100 +750,14 @@ export default function ReLoadedOnePage() {
             </motion.article>
           </div>
 
-          <section className="mb-14 overflow-hidden py-3" aria-labelledby="food-gallery-heading">
-            <motion.div
-              initial={{ opacity: 0, y: 40, rotate: -1 }}
-              whileInView={{ opacity: 1, y: 0, rotate: 1 }}
-              viewport={{ once: true, margin: "-120px" }}
-              transition={shouldReduceMotion ? { duration: 0 } : undefined}
-              className="mb-8 bg-black p-5 text-white shadow-[10px_10px_0_#fff] md:p-7"
-            >
-              <h2
-                id="food-gallery-heading"
-                className="text-6xl font-black uppercase leading-none tracking-[-0.06em] md:text-8xl"
-              >
-                COME HUNGRY
-              </h2>
-              <p className="mt-3 max-w-3xl text-xl font-black uppercase text-white md:text-2xl">
-                Fresh-cooked, properly loaded, no boring food.
-              </p>
-            </motion.div>
-
-            <div className="no-scrollbar -mx-5 flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 pb-5 md:mx-0 md:grid md:grid-cols-12 md:items-start md:gap-5 md:overflow-visible md:px-0 md:pb-0">
-              {foodGalleryAssets.map((asset, index) => {
-                const rotations = ["-rotate-2", "rotate-1", "rotate-3", "-rotate-1"];
-                const spans = [
-                  "md:col-span-5 md:row-span-2",
-                  "md:col-span-4",
-                  "md:col-span-3 md:mt-8",
-                  "md:col-span-4 md:-mt-2",
-                  "md:col-span-3 md:mt-7",
-                  "md:col-span-5",
-                  "md:col-span-4 md:-mt-4",
-                  "md:col-span-4 md:mt-5",
-                ];
-                const heights = [
-                  "md:h-[31rem]",
-                  "md:h-64",
-                  "md:h-72",
-                  "md:h-72",
-                  "md:h-64",
-                  "md:h-80",
-                  "md:h-72",
-                  "md:h-64",
-                ];
-
-                return (
-                  <motion.figure
-                    key={asset.label}
-                    initial={{ opacity: 0, y: 42, rotate: index % 2 === 0 ? -4 : 4 }}
-                    whileInView={{
-                      opacity: 1,
-                      y: 0,
-                      rotate: index % 2 === 0 ? -1.5 : 1.5,
-                    }}
-                    whileHover={shouldReduceMotion ? undefined : { y: -8, rotate: 0 }}
-                    viewport={{ once: true, margin: "-80px" }}
-                    transition={
-                      shouldReduceMotion
-                        ? { duration: 0 }
-                        : {
-                            delay: 0.04 * index,
-                            type: "spring",
-                            stiffness: 100,
-                            damping: 15,
-                          }
-                    }
-                    className={`min-w-[78vw] snap-center border-8 border-black bg-white p-3 shadow-[10px_10px_0_#000] sm:min-w-[45vw] md:min-w-0 ${
-                      rotations[index % rotations.length]
-                    } ${spans[index]}`}
-                  >
-                    <div className={`relative h-72 overflow-hidden bg-neutral-100 ${heights[index]}`}>
-                      <Image
-                        src={asset.src}
-                        alt={asset.alt}
-                        fill
-                        sizes="(max-width: 640px) 78vw, (max-width: 768px) 45vw, 34vw"
-                        className="object-cover"
-                      />
-                    </div>
-                    <figcaption className="mt-3 border-t-4 border-black pt-2 text-lg font-black uppercase text-[#e30613]">
-                      {asset.label}
-                    </figcaption>
-                  </motion.figure>
-                );
-              })}
-            </div>
-          </section>
-
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
             {menuSections.map((section, index) => (
               <motion.article
                 key={section.title}
-                initial={{ opacity: 0, y: 70, rotate: -4 }}
-                whileInView={{ opacity: 1, y: 0, rotate: index % 2 ? 2 : -2 }}
+                initial={{ opacity: 0, y: 45, rotate: index % 2 ? 1 : -1 }}
+                whileInView={{ opacity: 1, y: 0, rotate: index % 2 ? 1 : -1 }}
                 whileHover={
-                  shouldReduceMotion ? undefined : { y: -8, rotate: 0, scale: 1.02 }
+                  shouldReduceMotion ? undefined : { y: -5, rotate: 0 }
                 }
                 viewport={{ once: true, margin: "-100px" }}
                 transition={
@@ -867,9 +765,18 @@ export default function ReLoadedOnePage() {
                     ? { duration: 0 }
                     : { type: "spring", stiffness: 100, damping: 14 }
                 }
-                className="bg-white p-5 shadow-2xl"
+                className="flex h-full flex-col border-8 border-black bg-white p-4 shadow-2xl"
               >
-                <div className="mb-5 border-b-4 border-black pb-4">
+                <div className="relative mb-4 aspect-[5/3] overflow-hidden border-4 border-black bg-neutral-100">
+                  <Image
+                    src={section.image.src}
+                    alt={section.image.alt}
+                    fill
+                    sizes="(max-width: 768px) 92vw, (max-width: 1280px) 45vw, 30vw"
+                    className="object-cover"
+                  />
+                </div>
+                <div className="mb-4 border-b-4 border-black pb-4">
                   <div>
                     <h3 className="text-2xl font-black uppercase leading-none text-[#e30613]">
                       {section.title === "Tofu Burger + Crispy Tofu" ? "Tofu" : section.title}
@@ -881,7 +788,7 @@ export default function ReLoadedOnePage() {
                     ) : null}
                   </div>
                 </div>
-                <div className="space-y-5">
+                <div className="flex-1 space-y-4">
                   {section.items.map((item) => (
                     <div
                       key={item.name}
@@ -927,14 +834,14 @@ export default function ReLoadedOnePage() {
         </div>
       </section>
 
-      <section id="visit" className="relative z-10 bg-white px-5 py-20 md:px-12">
-        <div className="mx-auto grid max-w-6xl gap-8 md:grid-cols-2">
+      <section id="visit" className="relative z-10 bg-white px-5 py-16 md:px-12">
+        <div className="mx-auto grid max-w-6xl items-stretch gap-5 md:grid-cols-2">
           <motion.div
             initial={{ opacity: 0, x: -60 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={shouldReduceMotion ? { duration: 0 } : undefined}
-            className="bg-[#e30613] p-8 text-white shadow-2xl"
+            className="h-full bg-[#e30613] p-6 text-white shadow-2xl md:p-8"
           >
             <Clock className="mb-4 h-12 w-12" />
             <div
@@ -965,7 +872,7 @@ export default function ReLoadedOnePage() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={shouldReduceMotion ? { duration: 0 } : undefined}
-            className="border-8 border-black bg-white p-8 shadow-2xl"
+            className="h-full border-8 border-black bg-white p-6 shadow-2xl md:p-8"
           >
             <MapPin className="mb-4 h-12 w-12 text-[#e30613]" />
             <h2 className="text-5xl font-black uppercase leading-none tracking-[-0.05em] text-[#e30613] md:text-6xl">
@@ -1004,17 +911,17 @@ export default function ReLoadedOnePage() {
                 ? { duration: 0 }
                 : { type: "spring", stiffness: 100, damping: 16 }
             }
-            className="border-8 border-black bg-white p-5 shadow-[12px_12px_0_#000] md:col-span-2 md:p-7"
+            className="border-8 border-black bg-white p-5 shadow-[12px_12px_0_#000] md:col-span-2 md:p-6"
           >
-            <div className="grid gap-6 lg:grid-cols-[0.82fr_1.18fr] lg:items-center">
+            <div className="grid gap-5 lg:grid-cols-[0.78fr_1.22fr] lg:items-center">
               <div>
                 <div className="mb-5 inline-flex rotate-[-2deg] bg-[#e30613] px-4 py-2 text-sm font-black uppercase tracking-[0.18em] text-white shadow-lg">
                   Dawlish
                 </div>
-                <h2 className="text-6xl font-black uppercase leading-none tracking-[-0.06em] text-[#e30613] md:text-8xl">
+                <h2 className="text-6xl font-black uppercase leading-none tracking-[-0.06em] text-[#e30613] md:text-7xl">
                   FIND US
                 </h2>
-                <address className="mt-5 not-italic text-3xl font-black uppercase leading-tight md:text-5xl">
+                <address className="mt-5 not-italic text-3xl font-black uppercase leading-tight md:text-4xl">
                   3 Piermont Place
                   <br />
                   Dawlish
@@ -1028,7 +935,7 @@ export default function ReLoadedOnePage() {
                   Open in Google Maps
                 </a>
               </div>
-              <div className="relative min-h-[250px] overflow-hidden border-8 border-black bg-white shadow-[8px_8px_0_#e30613] sm:min-h-[320px]">
+              <div className="relative min-h-[240px] overflow-hidden border-8 border-black bg-white shadow-[8px_8px_0_#e30613] sm:min-h-[280px]">
                 <iframe
                   title="Google Map showing ReLoaded at 3 Piermont Place, Dawlish"
                   src="https://www.google.com/maps?q=ReLoaded%2C%203%20Piermont%20Place%2C%20Dawlish%20EX7%209PH&z=17&output=embed"
