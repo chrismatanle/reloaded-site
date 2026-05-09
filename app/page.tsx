@@ -213,6 +213,49 @@ const wingsSpecialAsset: VisualAsset = {
   src: "/boneless-wings.jpeg",
 };
 
+const foodGalleryAssets: VisualAsset[] = [
+  {
+    label: "Steak & Shortrib Burger",
+    alt: "ReLoaded steak and shortrib burger in a brioche bun",
+    src: "/beef-burger.jpg",
+  },
+  {
+    label: "Loaded Fries",
+    alt: "ReLoaded loaded fries with bacon jam and pickled red onion",
+    src: "/reloaded-loaded-fries-bacon-jam-and-pickled-onion-square.jpg",
+  },
+  {
+    label: "Tofu Burger",
+    alt: "ReLoaded crispy tofu burger with lettuce, tomato and pickles",
+    src: "/reloaded_crispy_tofu_burger_square.jpg",
+  },
+  {
+    label: "Chicken Burger",
+    alt: "ReLoaded crispy chicken burger in a brioche bun",
+    src: "/chicken-burger.jpg",
+  },
+  {
+    label: "Boneless Wings",
+    alt: "ReLoaded boneless chicken wings with sauce",
+    src: "/boneless-wings.jpeg",
+  },
+  {
+    label: "Meal Deal",
+    alt: "ReLoaded meal deal with burger, fries and a drink",
+    src: "/meal-deal.jpg",
+  },
+  {
+    label: "Chicken Tenders",
+    alt: "ReLoaded crispy chicken tenders",
+    src: "/reloaded_chicken_tenders.jpg",
+  },
+  {
+    label: "Jalapeño Poppers",
+    alt: "ReLoaded jalapeño cheese poppers with house cheese sauce",
+    src: "/reloaded_jalapeno_poppers_square.jpg",
+  },
+];
+
 const marqueeItems = [
   "LOADED FRIES",
   "STEAK & SHORTRIB BURGERS",
@@ -833,6 +876,92 @@ export default function ReLoadedOnePage() {
               </div>
             </motion.article>
           </div>
+
+          <section className="mb-14 overflow-hidden py-3" aria-labelledby="food-gallery-heading">
+            <motion.div
+              initial={{ opacity: 0, y: 40, rotate: -1 }}
+              whileInView={{ opacity: 1, y: 0, rotate: 1 }}
+              viewport={{ once: true, margin: "-120px" }}
+              transition={shouldReduceMotion ? { duration: 0 } : undefined}
+              className="mb-8 bg-black p-5 text-white shadow-[10px_10px_0_#fff] md:p-7"
+            >
+              <h2
+                id="food-gallery-heading"
+                className="text-6xl font-black uppercase leading-none tracking-[-0.06em] md:text-8xl"
+              >
+                COME HUNGRY
+              </h2>
+              <p className="mt-3 max-w-3xl text-xl font-black uppercase text-white md:text-2xl">
+                Fresh-cooked, properly loaded, no boring food.
+              </p>
+            </motion.div>
+
+            <div className="no-scrollbar -mx-5 flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 pb-5 md:mx-0 md:grid md:grid-cols-12 md:items-start md:gap-5 md:overflow-visible md:px-0 md:pb-0">
+              {foodGalleryAssets.map((asset, index) => {
+                const rotations = ["-rotate-2", "rotate-1", "rotate-3", "-rotate-1"];
+                const spans = [
+                  "md:col-span-5 md:row-span-2",
+                  "md:col-span-4",
+                  "md:col-span-3 md:mt-8",
+                  "md:col-span-4 md:-mt-2",
+                  "md:col-span-3 md:mt-7",
+                  "md:col-span-5",
+                  "md:col-span-4 md:-mt-4",
+                  "md:col-span-4 md:mt-5",
+                ];
+                const heights = [
+                  "md:h-[31rem]",
+                  "md:h-64",
+                  "md:h-72",
+                  "md:h-72",
+                  "md:h-64",
+                  "md:h-80",
+                  "md:h-72",
+                  "md:h-64",
+                ];
+
+                return (
+                  <motion.figure
+                    key={asset.label}
+                    initial={{ opacity: 0, y: 42, rotate: index % 2 === 0 ? -4 : 4 }}
+                    whileInView={{
+                      opacity: 1,
+                      y: 0,
+                      rotate: index % 2 === 0 ? -1.5 : 1.5,
+                    }}
+                    whileHover={shouldReduceMotion ? undefined : { y: -8, rotate: 0 }}
+                    viewport={{ once: true, margin: "-80px" }}
+                    transition={
+                      shouldReduceMotion
+                        ? { duration: 0 }
+                        : {
+                            delay: 0.04 * index,
+                            type: "spring",
+                            stiffness: 100,
+                            damping: 15,
+                          }
+                    }
+                    className={`min-w-[78vw] snap-center border-8 border-black bg-white p-3 shadow-[10px_10px_0_#000] sm:min-w-[45vw] md:min-w-0 ${
+                      rotations[index % rotations.length]
+                    } ${spans[index]}`}
+                  >
+                    <div className={`relative h-72 overflow-hidden bg-neutral-100 ${heights[index]}`}>
+                      <Image
+                        src={asset.src}
+                        alt={asset.alt}
+                        fill
+                        sizes="(max-width: 640px) 78vw, (max-width: 768px) 45vw, 34vw"
+                        className="object-cover"
+                      />
+                    </div>
+                    <figcaption className="mt-3 border-t-4 border-black pt-2 text-lg font-black uppercase text-[#e30613]">
+                      {asset.label}
+                    </figcaption>
+                  </motion.figure>
+                );
+              })}
+            </div>
+          </section>
 
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {menuSections.map((section, index) => (
