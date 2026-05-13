@@ -905,13 +905,12 @@ export default function ReLoadedOnePage() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={shouldReduceMotion ? { duration: 0 } : undefined}
-            className="h-full border-8 border-black bg-white p-6 shadow-2xl md:p-8"
+            className="flex h-full flex-col border-8 border-black bg-white p-6 shadow-2xl md:p-8"
           >
-            <MapPin className="mb-4 h-12 w-12 text-[#e30613]" />
             <h2 className="text-5xl font-black uppercase leading-none tracking-[-0.05em] text-[#e30613] md:text-6xl">
               CONNECT WITH US
             </h2>
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-6 flex flex-wrap gap-3">
               {socials.map(({ label, href }) => (
                 <a
                   key={label}
@@ -932,43 +931,23 @@ export default function ReLoadedOnePage() {
                 </a>
               ))}
             </div>
-          </motion.div>
 
-          <motion.article
-            initial={{ opacity: 0, y: 48, rotate: -2 }}
-            whileInView={{ opacity: 1, y: 0, rotate: -1 }}
-            whileHover={shouldReduceMotion ? undefined : { y: -6, rotate: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={
-              shouldReduceMotion
-                ? { duration: 0 }
-                : { type: "spring", stiffness: 100, damping: 16 }
-            }
-            className="border-8 border-black bg-white p-5 shadow-[12px_12px_0_#000] md:col-span-2 md:p-6"
-          >
-            <div className="grid gap-5 lg:grid-cols-[0.78fr_1.22fr] lg:items-center">
-              <div>
-                <div className="mb-5 inline-flex rotate-[-2deg] bg-[#e30613] px-4 py-2 text-sm font-black uppercase tracking-[0.18em] text-white shadow-lg">
-                  Dawlish
-                </div>
-                <h2 className="text-6xl font-black uppercase leading-none tracking-[-0.06em] text-[#e30613] md:text-7xl">
+            <div className="mt-8 flex flex-1 flex-col border-t-4 border-black pt-6">
+              <div className="mb-4 inline-flex w-fit rotate-[-2deg] bg-[#e30613] px-4 py-2 text-sm font-black uppercase tracking-[0.18em] text-white shadow-lg">
+                Dawlish
+              </div>
+              <div className="flex items-center gap-3">
+                <MapPin className="h-10 w-10 shrink-0 text-[#e30613]" />
+                <h2 className="text-5xl font-black uppercase leading-none tracking-[-0.05em] text-[#e30613] md:text-6xl">
                   FIND US
                 </h2>
-                <address className="mt-5 not-italic text-3xl font-black uppercase leading-tight md:text-4xl">
-                  3 Piermont Place
-                  <br />
-                  Dawlish
-                </address>
-                <a
-                  href="https://share.google/caOXAEYzmXagoQAOS"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-7 inline-flex min-h-14 items-center justify-center rounded-full bg-black px-7 py-4 text-center text-base font-black uppercase text-white transition hover:-translate-y-1 hover:rotate-1 hover:bg-[#e30613] focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#e30613] md:text-lg"
-                >
-                  Open in Google Maps
-                </a>
               </div>
-              <div className="relative min-h-[240px] overflow-hidden border-8 border-black bg-white shadow-[8px_8px_0_#e30613] sm:min-h-[280px]">
+              <address className="mt-4 not-italic text-3xl font-black uppercase leading-tight md:text-4xl">
+                3 Piermont Place
+                <br />
+                Dawlish
+              </address>
+              <div className="relative mt-5 h-44 overflow-hidden border-8 border-black bg-white shadow-[8px_8px_0_#e30613] sm:h-52 md:h-56">
                 <iframe
                   title="Google Map showing ReLoaded at 3 Piermont Place, Dawlish"
                   src="https://www.google.com/maps?q=ReLoaded%2C%203%20Piermont%20Place%2C%20Dawlish%20EX7%209PH&z=17&output=embed"
@@ -977,8 +956,16 @@ export default function ReLoadedOnePage() {
                   className="absolute inset-0 h-full w-full"
                 />
               </div>
+              <a
+                href="https://share.google/caOXAEYzmXagoQAOS"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-6 inline-flex min-h-14 w-fit items-center justify-center rounded-full bg-black px-7 py-4 text-center text-base font-black uppercase text-white transition hover:-translate-y-1 hover:rotate-1 hover:bg-[#e30613] focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#e30613] md:text-lg"
+              >
+                Open in Google Maps
+              </a>
             </div>
-          </motion.article>
+          </motion.div>
         </div>
       </section>
 
