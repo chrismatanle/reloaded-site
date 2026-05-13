@@ -264,10 +264,12 @@ function getCurrentOpenStatus(date: Date) {
   const minute = Number(parts.find((part) => part.type === "minute")?.value ?? "0");
   const totalMinutes = hour * 60 + minute;
   const isLunch = totalMinutes >= 12 * 60 && totalMinutes < 15 * 60;
-  const isEvening = totalMinutes >= 17 * 60 && totalMinutes < 20 * 60;
-  const isOpenDay = ["Wed", "Thu", "Fri", "Sat", "Sun"].includes(weekday);
+  const isEvening = totalMinutes >= 17 * 60 && totalMinutes < 23 * 60;
 
-  return isOpenDay && (isLunch || isEvening);
+  if (["Mon", "Tue"].includes(weekday)) return false;
+  if (weekday === "Sat") return isLunch || totalMinutes >= 17 * 60;
+
+  return ["Wed", "Thu", "Fri", "Sun"].includes(weekday) && isEvening;
 }
 
 function SocialIconInstagram(props: SVGProps<SVGSVGElement>) {
@@ -849,21 +851,52 @@ export default function ReLoadedOnePage() {
                 isOpen ? "animate-pulse bg-white text-black" : "bg-white text-black"
               }`}
             >
-              {isOpen ? "Currently Open" : "Currently Closed"}
+              {isOpen ? "CURRENTLY OPEN" : "CURRENTLY CLOSED"}
             </div>
-            <div className="space-y-1">
-              <p className="text-3xl font-black uppercase tracking-[-0.05em] md:text-4xl">
-                Wed-Sun
-              </p>
-              <p className="text-5xl font-black uppercase tracking-[-0.05em] md:text-7xl">
-                12-3pm
-              </p>
-              <p className="text-5xl font-black uppercase tracking-[-0.05em] md:text-7xl">
-                5-8pm
-              </p>
+            <div className="space-y-4">
+              <div className="-rotate-1 border-4 border-black bg-white px-4 py-3 text-black shadow-[6px_6px_0_#000]">
+                <p className="text-2xl font-black uppercase tracking-[-0.05em] md:text-3xl">
+                  MON-TUE
+                </p>
+                <p className="text-4xl font-black uppercase tracking-[-0.05em] md:text-5xl">
+                  Closed
+                </p>
+              </div>
+              <div className="rotate-1 border-4 border-black bg-white px-4 py-3 text-black shadow-[6px_6px_0_#000]">
+                <p className="text-2xl font-black uppercase tracking-[-0.05em] md:text-3xl">
+                  WED-FRI
+                </p>
+                <p className="text-4xl font-black uppercase tracking-[-0.05em] md:text-5xl">
+                  5PM <span aria-hidden="true">—</span>{" "}
+                  <span className="text-[#e30613]">LATE</span>
+                </p>
+              </div>
+              <div className="-rotate-1 border-4 border-black bg-white px-4 py-3 text-black shadow-[6px_6px_0_#000]">
+                <p className="text-2xl font-black uppercase tracking-[-0.05em] md:text-3xl">
+                  SATURDAY
+                </p>
+                <p className="text-4xl font-black uppercase tracking-[-0.05em] md:text-5xl">
+                  12–3PM
+                </p>
+                <p className="text-4xl font-black uppercase tracking-[-0.05em] md:text-5xl">
+                  5PM <span aria-hidden="true">—</span>{" "}
+                  <span className="text-[#e30613]">LATE</span>
+                </p>
+              </div>
+              <div className="rotate-1 border-4 border-black bg-white px-4 py-3 text-black shadow-[6px_6px_0_#000]">
+                <p className="text-2xl font-black uppercase tracking-[-0.05em] md:text-3xl">
+                  SUNDAY
+                </p>
+                <p className="text-4xl font-black uppercase tracking-[-0.05em] md:text-5xl">
+                  5PM <span aria-hidden="true">—</span>{" "}
+                  <span className="text-[#e30613]">LATE</span>
+                </p>
+              </div>
             </div>
-            <p className="mt-5 max-w-md text-xl font-black uppercase">
-              Late opening may flex depending on demand - keep an eye on socials.
+            <p className="mt-6 max-w-md text-xl font-black uppercase">
+              Closing time may vary depending on demand.
+              <br />
+              Keep an eye on socials for updates.
             </p>
           </motion.div>
 
