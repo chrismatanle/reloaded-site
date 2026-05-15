@@ -691,7 +691,7 @@ export default function ReLoadedOnePage() {
               className="flex h-full flex-col border-8 border-black bg-white p-5 shadow-2xl md:p-6"
             >
               <div className="mb-4 inline-flex rotate-[-2deg] bg-[#e30613] px-4 py-2 text-sm font-black uppercase tracking-[0.18em] text-white shadow-lg">
-                Lunchtime Special
+                Saturday Lunchtime Special
               </div>
               <div className="flex flex-1 flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
                 <div className="flex-1">
