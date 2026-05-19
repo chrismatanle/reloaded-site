@@ -467,6 +467,28 @@ export default function ReLoadedOnePage() {
     };
   }, []);
 
+  useEffect(() => {
+    const scrollToConnect = () => {
+      if (window.location.hash !== "#connect") return;
+
+      document.getElementById("connect")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    };
+
+    const frameId = window.requestAnimationFrame(scrollToConnect);
+    const timeoutId = window.setTimeout(scrollToConnect, 150);
+
+    window.addEventListener("hashchange", scrollToConnect);
+
+    return () => {
+      window.cancelAnimationFrame(frameId);
+      window.clearTimeout(timeoutId);
+      window.removeEventListener("hashchange", scrollToConnect);
+    };
+  }, []);
+
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#e30613] text-black">
       <div
@@ -901,11 +923,12 @@ export default function ReLoadedOnePage() {
           </motion.div>
 
           <motion.div
+            id="connect"
             initial={{ opacity: 0, x: 60 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={shouldReduceMotion ? { duration: 0 } : undefined}
-            className="flex h-full flex-col border-8 border-black bg-white p-6 shadow-2xl md:p-8"
+            className="flex h-full scroll-mt-6 flex-col border-8 border-black bg-white p-6 shadow-2xl md:scroll-mt-8 md:p-8"
           >
             <h2 className="text-5xl font-black uppercase leading-none tracking-[-0.05em] text-[#e30613] md:text-6xl">
               CONNECT WITH US
